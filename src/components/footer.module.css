@@ -1,0 +1,15 @@
+.footer{
+    display: flex;
+    align-items: end;
+    position: relative;
+    height: 210px;
+    background-color: var(--black);
+    background-image: url(../assets/hero/hero-background.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.footer__bottom {
+    width: 100%;
+    border-top: 2px solid var(--grey);
+}

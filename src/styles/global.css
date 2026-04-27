@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Bitcount';
+  src: url('../assets/fonts/BitcountGridSingle.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bitcount Double';
+  src: url('../assets/fonts/BitcountGridDouble.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('../assets/fonts/Outfit.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --black: #1d1d1d;
+  --grey: #adadad;
+  --orange: #ec6519;
+  --green: #99d900;
+  --white: #ececec;
+}
+
+html {
+  font-family: "Outfit", "Helvetica Neue", "Roboto", sans-serif;
+  background: var(--white);
+}
+
+.white-background {
+  background:
+    linear-gradient(rgba(236, 236, 236, 0.95), rgba(236, 236, 236, 0.95)),
+    url(../assets/backgrounds/gauss-noise.webp);
+}
+
+.orange-background {
+  background:
+    linear-gradient(rgba(236, 101, 25, 0.95), rgba(236, 101, 25, 0.95)),
+    url(../assets/backgrounds/grid-noise.webp);
+}
+
+.black-background {
+  background:
+    linear-gradient(rgba(29, 29, 29, 0.95), rgba(29, 29, 29, 0.95)),
+    url(../assets/backgrounds/gauss-noise.webp);
+}
+
+.grey-background {
+  background:
+    linear-gradient(rgba(173, 173, 173, 0.95), rgba(173, 173, 173, 0.95)),
+    url(../assets/backgrounds/grid-noise.webp);
+}
