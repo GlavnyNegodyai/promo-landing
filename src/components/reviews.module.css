@@ -1,0 +1,31 @@
+.reviews{
+    background: linear-gradient(to right, transparent 0%, var(--black) 50%), url("../assets/reviews/review-background.webp");
+    background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.card{
+    max-width: 360px;
+    height: 478px;
+}
+
+.card:nth-child(3n - 1){
+  background: var(--orange);
+}
+
+.card:nth-child(3n){
+  background: var(--white);
+}
+
+.card:nth-child(3n + 1){
+  background: var(--green);
+}
+
+.card:nth-child(3n-1) .profit, .card:nth-child(3n) .profit{
+  color: var(--green);
+}
+
+.card:nth-child(3n + 1) .profit{
+  color: var(--white);
+}

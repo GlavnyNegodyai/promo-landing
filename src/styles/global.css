@@ -32,6 +32,7 @@
 html {
   font-family: "Outfit", "Helvetica Neue", "Roboto", sans-serif;
   background: var(--white);
+  color: var(--black);
 }
 
 .white-background {
@@ -49,7 +50,7 @@ html {
 .black-background {
   background:
     linear-gradient(rgba(29, 29, 29, 0.95), rgba(29, 29, 29, 0.95)),
-    url(../assets/backgrounds/gauss-noise.webp);
+    url(../assets/backgrounds/grid-noise.webp);
 }
 
 .grey-background {

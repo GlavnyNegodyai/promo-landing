@@ -1,4 +1,68 @@
 .calculator {
-    width: 100%;
-    max-width: 720px;
+  width: 100%;
+  max-width: 720px;
 }
+
+.range {
+  --progress: 50%;
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--green) 0%,
+    var(--green) var(--progress),
+    var(--white) var(--progress),
+    var(--white) 100%
+  );
+  cursor: pointer;
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--orange);
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -10px;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--green) 0%,
+    var(--green) var(--progress),
+    var(--white) var(--progress),
+    var(--white) 100%
+  );
+}
+
+/* Firefox */
+.range::-moz-range-track {
+  height: 4px;
+  background: var(--white);
+}
+
+.range::-moz-range-progress {
+  height: 4px;
+  background: var(--green);
+}
+
+.range-value {
+  width: 24px;
+  display: block;
+}
+
+.range-value p {
+  width: fit-content;
+  display: block;
+  margin: 0 auto;
+}
+
+.range-value--active{
+  color: var(--orange);
+  font-weight: 500;
+}
+

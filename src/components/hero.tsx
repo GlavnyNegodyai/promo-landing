@@ -24,7 +24,7 @@ export default function Hero() {
                   x="-100"
                   y="100%"
                   dy="15"
-                  font-size="160"
+                  fontSize="160"
                   fill="rgba(0, 0, 0, 1)"
                 >
                   WALL STREET/NASDAQ/NEW YORK STOCK EXCHANGE/GOLDMAN
@@ -34,7 +34,7 @@ export default function Hero() {
                 <text
                   x="-1000"
                   y="100%"
-                  font-size="144"
+                  fontSize="144"
                   dy="-105"
                   fill="rgba(0, 0, 0, .5)"
                 >
@@ -44,7 +44,7 @@ export default function Hero() {
                 <text
                   x="-1400"
                   y="100%"
-                  font-size="128"
+                  fontSize="128"
                   dy="-215"
                   fill="rgba(0, 0, 0, .25)"
                 >
@@ -54,7 +54,7 @@ export default function Hero() {
                 <text
                   x="-3300"
                   y="100%"
-                  font-size="128"
+                  fontSize="128"
                   dy="-320"
                   fill="rgba(0, 0, 0, .125)"
                 >

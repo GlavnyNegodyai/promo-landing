@@ -1,0 +1,24 @@
+.list-element{
+    border-bottom: 2px solid var(--white);
+    padding: 18px 0;
+}
+
+.list-btn{
+    color: var(--green);
+}
+
+.list-btn.active{
+    color: var(--orange);
+    transform:rotate(45deg);
+}
+
+.answer {
+    height: 0;
+    overflow: hidden;
+}
+
+.button{
+    overflow: hidden;
+    height: 52px;
+    width: 52px;
+}

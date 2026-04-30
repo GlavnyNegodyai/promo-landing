@@ -1,0 +1,5 @@
+.button {
+  padding: calc(var(--spacing) * 2);
+  border-radius: calc(var(--spacing) * 4);
+  text-transform: capitalize;
+}

@@ -6,7 +6,7 @@ function Input({type, id, children, required}: {type: string, id: string, childr
       <label htmlFor={id}>{children}{required ? <span className="text-(--orange)">*</span>: ""}</label>
       <input
         type={type}
-        className="bg-{--white} rounded-2xl border-(--green) border-2 h-12 w-full"
+        className="bg-(--white) rounded-2xl border-(--green) border-2 h-12 w-full mt-3 p-2"
         id={id}
         required={required}
       />
@@ -14,9 +14,9 @@ function Input({type, id, children, required}: {type: string, id: string, childr
   );
 }
 
-export default function Form() {
+export default function Form({extraClass}: {extraClass?: string}) {
   return (
-    <form action="" className="w-full">
+    <form action="" className={`w-full ${extraClass ? extraClass: ""}`}>
       <div className="grid grid-cols-2 gap-6">
         <Input type="text" id="name" required>
           Name
@@ -35,7 +35,7 @@ export default function Form() {
           Phone number
         </Input>
       </div>
-      <Button>Submit</Button>
+      <Button className="bg-(--green)">Submit</Button>
     </form>
   );
 }

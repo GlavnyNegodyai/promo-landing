@@ -1,14 +1,16 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
+
+import styles from "./button.module.css";
 
 type ButtonProps = {
-  children: ReactNode,
+  children: ReactNode;
   className?: string;
 };
 
-export default function Button({children, className}: ButtonProps) {
-    return(
-        <button className={`${className ? className: 'bg-(--green) text-(--black)'} p-2 rounded-2xl capitalizwv`}>
-            {children}
-        </button>
-    );
+export default function Button({ children, className }: ButtonProps) {
+  return (
+    <button className={`${styles.button} ${className ?? ""}`}>
+      {children}
+    </button>
+  );
 }

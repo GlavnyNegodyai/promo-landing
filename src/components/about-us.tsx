@@ -3,8 +3,8 @@ import img1 from "../assets/about-us/Frame 5.svg";
 
 export default function AboutUs() {
   return (
-    <section className="px-8 py-8 h-full">
-      <div className="grid grid-cols-2 gap-8 container mx-auto">
+    <section className="py-18 h-full">
+      <div className="grid grid-cols-2 gap-18 container mx-auto">
         <ul className="text-(--white)">
           <li className="flex justify-between items-start gap-18 bg-(--orange) rounded-[36px] p-6 pr-12">
             <div className="flex flex-col">
@@ -39,7 +39,7 @@ export default function AboutUs() {
         </ul>
         <div>
           <SubHeadline>about us</SubHeadline>
-          <h2 className="text-5xl">Pirate ipsum league spanker shot.</h2>
+          <h2 className="text-5xl pb-6">Pirate ipsum league spanker shot.</h2>
           <p>
             Pirate ipsum arrgh bounty warp jack. Jolly parrel keelhaul spyglass
             hogshead seven jones' blow gangway tea. Jolly lee arrgh belaying fer
