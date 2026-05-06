@@ -11,7 +11,7 @@ export default function Footer() {
               <text
                 x="-1686px"
                 y="80px"
-                font-size="144px"
+                fontSize="144px"
                 fill="rgba(0, 0, 0, 1)"
               >
                 neural_net_registry.&lt;PIXUM_AI&gt;.from_pretrained("vision-core-v2.4-alpha",

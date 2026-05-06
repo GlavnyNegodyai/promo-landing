@@ -1,31 +1,85 @@
-.reviews{
-    background: linear-gradient(to right, transparent 0%, var(--black) 50%), url("../assets/reviews/review-background.webp");
-    background-repeat: no-repeat;
+.reviews {
+  background:
+    linear-gradient(to right, transparent 0%, var(--black) 50%),
+    url("../assets/reviews/review-background.webp");
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
 }
 
-.card{
-    max-width: 360px;
-    height: 478px;
+:global(.swiper-wrapper) {
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.card:nth-child(3n - 1){
-  background: var(--orange);
+.card {
+  height: 478px;
 }
 
-.card:nth-child(3n){
+:global(.swiper-slide:not(.swiper-slide-visible)) {
+  filter: blur(5px) brightness(0.5);
+}
+
+:global(.swiper-slide.swiper-slide-visible) {
+  filter: blur(0);
+  opacity: 1;
+}
+
+:global(.swiper-slide):nth-child(3n - 1) .card {
   background: var(--white);
 }
 
-.card:nth-child(3n + 1){
+:global(.swiper-slide):nth-child(3n) .card {
   background: var(--green);
 }
 
-.card:nth-child(3n-1) .profit, .card:nth-child(3n) .profit{
+:global(.swiper-slide):nth-child(3n + 1) .card {
+  
+  background: var(--orange);
+}
+
+:global(.swiper-slide):nth-child(3n - 1) .profit {
   color: var(--green);
 }
 
-.card:nth-child(3n + 1) .profit{
+:global(.swiper-slide):nth-child(3n + 1) .profit,
+:global(.swiper-slide):nth-child(3n) .profit {
   color: var(--white);
+}
+
+:global(.swiper-button-prev), :global(.swiper-button-next) {
+  background-color: var(--green);
+}
+
+.button :global(svg){
+  width: fit-content;
+  height: 100%;
+}
+
+.button{
+  background-color: var(--green);
+  color: var(--white);
+  transition: 0.25s;
+}
+
+.button:hover{
+  background-color: var(--white);
+  color: var(--green);
+}
+
+.button:active {
+	animation: button-press 0.25s ease;
+}
+
+@keyframes button-press {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(0.96);
+	}
+	100% {
+		transform: scale(1);
+	}
 }

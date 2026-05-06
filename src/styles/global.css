@@ -22,11 +22,13 @@
 }
 
 :root {
-  --black: #1d1d1d;
-  --grey: #adadad;
-  --orange: #ec6519;
-  --green: #99d900;
-  --white: #ececec;
+  --black: rgba(29, 29, 29, 1);
+  --grey: rgba(173, 173, 173, 1);
+  --orange: rgba(236, 101, 25, 1);
+  --green: rgba(153, 217, 0, 1);
+  --green-rgb: 153, 217, 0;
+  --white: rgba(236, 236, 236, 1);
+  
 }
 
 html {

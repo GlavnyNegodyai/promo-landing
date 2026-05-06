@@ -153,7 +153,7 @@ export default function QA() {
   );
 
   return (
-    <section className="black-background py-18">
+    <section className="black-background py-18" id="qa">
       <div className="container mx-auto flex gap-18">
         <ul className="w-full">
           {questionList.map((questionElement, i) => {

@@ -3,7 +3,7 @@ import img1 from "../assets/about-us/Frame 5.svg";
 
 export default function AboutUs() {
   return (
-    <section className="py-18 h-full">
+    <section className="py-18 h-full" id="about-us">
       <div className="grid grid-cols-2 gap-18 container mx-auto">
         <ul className="text-(--white)">
           <li className="flex justify-between items-start gap-18 bg-(--orange) rounded-[36px] p-6 pr-12">
