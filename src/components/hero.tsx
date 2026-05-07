@@ -56,12 +56,11 @@ export default function Hero() {
   const horizontalLoop = contextSafe((el: SVGTextElement | null, i: number) => {
     if (!el) return;
     const textWidth = el.getComputedTextLength() ?? 0;
-    console.log(textWidth);
 
     if (i % 2 === 0) {
       gsap.to(el, {
         x: `${-(textWidth / 2)}px`,
-        duration: 40 + i * 6,
+        duration: 60 + i * 6,
         repeat: -1,
         ease: "none",
       });
@@ -71,7 +70,7 @@ export default function Hero() {
         { x: `${-(textWidth / 2)}px` },
         {
           x: `0px`,
-          duration: 40 + i * 6,
+          duration: 60 + i * 6,
           repeat: -1,
           ease: "none",
         },
@@ -106,19 +105,9 @@ export default function Hero() {
               </g>
             </mask>
           </defs>
-
           <rect
             width="100%"
             height="100%"
-            fill="#1d1d1d"
-            mask="url(#heroMask)"
-          />
-          <rect
-            width="54%"
-            height="86%"
-            x="50%"
-            y="-5%"
-            rx="36"
             fill="#1d1d1d"
             mask="url(#heroMask)"
           />

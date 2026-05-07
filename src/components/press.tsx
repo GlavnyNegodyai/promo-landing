@@ -211,16 +211,17 @@ export default function Press() {
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const [openedElement, setOpenedElement] = useState<number>(0);
+  const [isStopped, setIsStopped] = useState(false);
+  const openedElementRef = useRef(0);
 
-  const handleButtonPress = (currentIndex: number, openedIndex?: number) => {
-
+  const handlePressChange = (currentIndex: number, openedIndex?: number) => {
     if (openedIndex !== undefined) {
       if (openedIndex === currentIndex) return;
       const prevTestimonial = itemsRef.current[openedIndex];
       const prevBtn = buttonsRef.current[openedIndex];
 
       if (!prevTestimonial || !prevBtn) return;
-
+      
       prevTestimonial.classList.add("hidden");
       prevBtn.classList.remove(styles.active);
     }
@@ -229,10 +230,9 @@ export default function Press() {
     const currentBtn = buttonsRef.current[currentIndex];
 
     if (!currentTestimonial || !currentBtn) {
-      console.log("no");
       return;
-    };
-
+    }
+    gsap.fromTo(currentTestimonial, {opacity: 0}, {opacity: 1, duration: 0.6});
     currentTestimonial.classList.remove("hidden");
 
     currentBtn.classList.add(styles.active);
@@ -241,8 +241,28 @@ export default function Press() {
   };
 
   useEffect(() => {
-    handleButtonPress(openedElement);
-  }, []);
+    openedElementRef.current = openedElement;
+  }, [openedElement]);
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const loop = () => {
+      if (isStopped) return;
+
+      const prevIndex = openedElementRef.current;
+
+      let currIndex = (prevIndex + 1) % itemsRef.current.length;
+
+      handlePressChange(currIndex, prevIndex);
+
+      timeout = setTimeout(loop, 4000);
+    };
+
+    loop();
+
+    return () => clearTimeout(timeout);
+  }, [isStopped]);
 
   return (
     <section className="pt-12 pb-18" id="press">
@@ -268,7 +288,8 @@ export default function Press() {
               <li key={i}>
                 <PressOption
                   onButtonInteraction={() => {
-                    handleButtonPress(i, openedElement);
+                    handlePressChange(i, openedElement);
+                    setIsStopped(true);
                   }}
                   btnRef={(el) => {
                     buttonsRef.current[i] = el;

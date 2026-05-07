@@ -37,6 +37,11 @@ html {
   color: var(--black);
 }
 
+main{
+  position: relative;
+  z-index: 1;
+}
+
 .white-background {
   background:
     linear-gradient(rgba(236, 236, 236, 0.95), rgba(236, 236, 236, 0.95)),

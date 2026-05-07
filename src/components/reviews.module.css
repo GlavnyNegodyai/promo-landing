@@ -5,25 +5,18 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  display: grid;
-  grid-template-columns: 3fr 2fr;
 }
 
-:global(.swiper-wrapper) {
-  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.reviews-headline__element{
+  position: relative;
 }
 
 .card {
   height: 478px;
 }
 
-:global(.swiper-slide:not(.swiper-slide-visible)) {
+:global(.swiper-slide) {
   filter: blur(5px) brightness(0.5);
-}
-
-:global(.swiper-slide.swiper-slide-visible) {
-  filter: blur(0);
-  opacity: 1;
 }
 
 :global(.swiper-slide):nth-child(3n - 1) .card {
