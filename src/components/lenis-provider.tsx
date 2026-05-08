@@ -1,27 +1,18 @@
 import { useEffect } from "react";
-import Lenis from "lenis";
+import { ReactLenis } from "lenis/react";
 
-export default function LenisProvider() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      smoothWheel: true,
-      wheelMultiplier: 1.5,
-      touchMultiplier: 1.5,
-      lerp: 0.1,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return null;
+export default function LenisProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <ReactLenis
+      root
+      options={{
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1,
+        lerp: 0.1,
+      }}
+    >
+      {children}
+    </ReactLenis>
+  );
 }

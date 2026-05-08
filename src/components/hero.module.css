@@ -1,8 +1,14 @@
-.hero{
-    height: 100vh;
-    background-color: var(--black);
-    background-image: url(../assets/hero/hero-background.webp);
-background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+.hero {
+  height: 300vh;
+  background-color: var(--black);
+  position: relative;
+}
+
+.hero__content-wrap {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background-image: url(../assets/hero/hero-background.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
 }

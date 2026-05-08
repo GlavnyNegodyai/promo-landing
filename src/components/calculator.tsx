@@ -14,7 +14,7 @@ function DepositInput({
   defaultDeposit: number;
 }) {
   return (
-    <div className="text-3xl flex rounded-lg border-[2px] border-[var(--white)]">
+    <div className="text-3xl flex rounded-lg border-2 border-(--white)">
       <span className="text-(--orange) px-2 py-1">$</span>
       <input
         type="number"
