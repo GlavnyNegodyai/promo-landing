@@ -1,19 +1,25 @@
 import styles from "./reviews.module.css";
 import Button from "./button";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, A11y } from "swiper/modules";
+import { A11y } from "swiper/modules";
 import { EffectCards } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import type { Swiper as SwiperType } from "swiper";
 
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
 import img1 from "../assets/reviews/1.webp";
 import img2 from "../assets/reviews/2.webp";
 import img3 from "../assets/reviews/3.webp";
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrambleTextPlugin);
 
 type ReviewCardProps = {
   src: string;
@@ -42,19 +48,19 @@ function ReviewCard({ src, name, age, profit, quote }: ReviewCardProps) {
   );
 }
 
-const items = [
+const scrambledItems = [
   {
-    prefix: "a2cf2424d",
+    prefix: "a2cf2424d9",
     text: "look",
     hash: "2cf24dba5fb0a2cf24dba5fb0",
   },
   {
-    prefix: "ba5fb024d",
+    prefix: "ba5fb024d1",
     text: "what_our",
     hash: "9f86d08182cf24dba5fb0a2cf24dba5fb0",
   },
   {
-    prefix: "7a2cf24db",
+    prefix: "7a2cf24db3",
     text: "users",
     hash: "5d41402abc2cf24dba5fb0a2cf24dba5fb0",
   },
@@ -65,35 +71,138 @@ const items = [
   },
 ];
 
-function HashTitle() {
-  const leftSpanRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  function calculateShifts(ar: (HTMLSpanElement | null)[]) {
-    ar.forEach((el) => {
-      if (!el) return;
-      const shift = el.getBoundingClientRect().width;
-      el.style.left = `-${shift}px`;
-    });
-  }
+const preScrambledItems = [
+  {
+    prefix: "9f86d08188",
+    text: "a2cf",
+    hash: "7a2cf24dba5fb0a2cf24dba50",
+  },
+  {
+    prefix: "e3b0c44298",
+    text: "d08182cf",
+    hash: "2cf24dba5f9f86d08182cf24dba5fb0a2cf24dba5fb0",
+  },
+  {
+    prefix: "5d41402abc",
+    text: "24dba",
+    hash: "9f86d08182cf24dba5fb0a2cf24dba5fb0",
+  },
+  {
+    prefix: "7d793037a2",
+    text: "5fb",
+    hash: "2cf24dba5fb0a2cf24dba5fb0a2cf24dba5fb0",
+  },
+];
 
-  useEffect(() => {
-    calculateShifts(leftSpanRefs.current);
-  }, []);
+function HashTitle() {
+  const elementRef = useRef<HTMLHeadingElement | null>(null);
+  const prefixRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const postfixRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+useGSAP(() => {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: elementRef.current,
+      start: "top 80%",
+      end: "bottom 20%",
+      toggleActions: "restart reverse play reverse",
+    },
+  });
+
+  prefixRefs.current.forEach((ref, i) => {
+    if (!ref) return;
+
+    tl.fromTo(
+      ref,
+      { opacity: 0 },
+      {
+        opacity: .8,
+        duration: 1.4,
+        scrambleText: {
+          text: scrambledItems[i].prefix,
+          chars: "upperCase",
+          speed: 0.4,
+        },
+        ease: "power2.out",
+      },
+      0,
+    );
+  });
+
+  textRefs.current.forEach((ref, i) => {
+    if (!ref) return;
+
+    tl.fromTo(
+      ref,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 1.4,
+        scrambleText: {
+          text: scrambledItems[i].text,
+          chars: "upperCase",
+          speed: 0.4,
+        },
+        ease: "power2.out",
+      },
+      0,
+    );
+  });
+
+  postfixRefs.current.forEach((ref, i) => {
+    if (!ref) return;
+
+    tl.fromTo(
+      ref,
+      { opacity: 0 },
+      {
+        opacity: .8,
+        duration: 1.4,
+        scrambleText: {
+          text: scrambledItems[i].hash,
+          speed: 0.4,
+        },
+        ease: "power2.out",
+      },
+      0,
+    );
+  });
+});
+
   return (
-    <h2 className="text-8xl font-[Bitcount] font-light top-0 mb-8">
-      {items.map((item, i) => (
+    <h2
+      className="text-8xl font-[Bitcount] font-light top-0 mb-8"
+      ref={elementRef}
+    >
+      {preScrambledItems.map((item, i) => (
         <div key={item.text} className="relative">
           <span
-            className="absolute"
+            className="absolute -left-144"
             ref={(el) => {
-              leftSpanRefs.current[i] = el;
+              prefixRefs.current[i] = el;
             }}
           >
             {item.prefix}
           </span>
 
-          <span className="text-(--white)">{item.text}</span>
+          <span
+            className="text-(--white)"
+            ref={(el) => {
+              textRefs.current[i] = el;
+            }}
+          >
+            {item.text}
+          </span>
 
-          <span className="absolute">{item.hash}</span>
+          <span
+            className="absolute"
+            ref={(el) => {
+              postfixRefs.current[i] = el;
+            }}
+          >
+            {item.hash}
+          </span>
         </div>
       ))}
     </h2>
@@ -106,7 +215,6 @@ export default function Reviews() {
   const [currentSlide, setCurrentSlide] = useState<HTMLElement | null>(null);
   const prevRef = useRef<HTMLButtonElement | null>(null);
   const nextRef = useRef<HTMLButtonElement | null>(null);
-
   function animateSLides(
     prevRef: HTMLElement | null,
     currRef: HTMLElement | null,

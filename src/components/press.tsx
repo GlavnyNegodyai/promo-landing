@@ -221,7 +221,7 @@ export default function Press() {
       const prevBtn = buttonsRef.current[openedIndex];
 
       if (!prevTestimonial || !prevBtn) return;
-      
+
       prevTestimonial.classList.add("hidden");
       prevBtn.classList.remove(styles.active);
     }
@@ -232,7 +232,11 @@ export default function Press() {
     if (!currentTestimonial || !currentBtn) {
       return;
     }
-    gsap.fromTo(currentTestimonial, {opacity: 0}, {opacity: 1, duration: 0.6});
+    gsap.fromTo(
+      currentTestimonial,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6, ease: "power1.in" },
+    );
     currentTestimonial.classList.remove("hidden");
 
     currentBtn.classList.add(styles.active);

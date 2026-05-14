@@ -179,7 +179,7 @@ const animateLoading = contextSafe((loading: boolean) => {
     setTimeout(() => {
       const calculatedProfit =
         Math.round((deposit * Math.PI) / ((21 - (9 + 10)) / 1.5)) *
-        duration; /* -What`s nine plus ten? -Twenty one? -you stupid! */
+        duration; /* -What`s nine plus ten? -Twenty one? -you`re stupid! */
       const newProfitObj = {
         min: calculatedProfit - 42 * 2,
         max: calculatedProfit + 42 * 2,

@@ -1,6 +1,6 @@
 import SubHeadline from "./subheadline";
 import styles from "./qa.module.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -69,7 +69,18 @@ function ListElement({
 export default function QA() {
   const [opened, setOpened] = useState<number | null>(null);
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
+  const greenColorRef = useRef<string | null>(null);
+  const orangeColorRef = useRef<string | null>(null);
   const { contextSafe } = useGSAP();
+
+  useEffect(() => {
+    greenColorRef.current = getComputedStyle(document.documentElement)
+      .getPropertyValue("--green")
+      .trim();
+    orangeColorRef.current = getComputedStyle(document.documentElement)
+      .getPropertyValue("--orange")
+      .trim();
+  }, []);
 
   const handleAccordeon = contextSafe(
     (
@@ -87,51 +98,45 @@ export default function QA() {
         button: HTMLButtonElement,
         answer: HTMLParagraphElement,
       ) => {
-        gsap.to(answer, { height: "auto", duration: 0.4, ease: "power2.out" });
+        gsap.to(answer, { height: "100", duration: 0.2, ease: "power2.out" });
         gsap.to(button, {
           rotate: 45,
-          color: orangeColorVar,
+          color: `${orangeColorRef.current}`,
           fontWeight: "350",
-          duration: 0.2,
+          duration: 0.1,
           ease: "power2.out",
         });
       };
 
-      const closeAnswer = (button: HTMLButtonElement, answer:HTMLParagraphElement) => {
-        gsap.to(answer, { height: 0, duration: 0.4, ease: "power2.out" });
+      const closeAnswer = (
+        button: HTMLButtonElement,
+        answer: HTMLParagraphElement,
+      ) => {
+        gsap.to(answer, { height: 0, duration: 0.2, ease: "power2.out" });
         gsap.to(button, {
           rotate: 0,
-          color: greenColorVar,
+          color: `${greenColorRef.current}`,
           fontWeight: "",
-          duration: 0.2,
+          duration: 0.1,
           ease: "power2.out",
         });
       };
 
-      const greenColorVar = getComputedStyle(document.documentElement)
-        .getPropertyValue("--green")
-        .trim();
-      const orangeColorVar = getComputedStyle(document.documentElement)
-        .getPropertyValue("--orange")
-        .trim();
-
-      const answer = element.querySelector<HTMLParagraphElement>(`.${styles.answer}`);
+      const answer = element.querySelector<HTMLParagraphElement>(
+        `.${styles.answer}`,
+      );
       const button = element.querySelector<HTMLButtonElement>(
         `.${styles.button}`,
       );
 
       if (!button || !answer) return;
 
-      console.log(openedElementIndex, i);
-
       if (openedElementIndex == i) {
         closeAnswer(button, answer);
         setOpened(null);
-        console.log("no other accordeon opened");
         return;
       }
       if (openedElementIndex != null) {
-        console.log("other opened");
         const previousAnswer =
           previousElement?.querySelector<HTMLParagraphElement>(
             `.${styles.answer}`,

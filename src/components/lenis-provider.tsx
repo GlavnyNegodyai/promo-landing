@@ -7,7 +7,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       root
       options={{
         smoothWheel: true,
-        wheelMultiplier: 1,
+        wheelMultiplier: 0.8,
         touchMultiplier: 1,
         lerp: 0.1,
       }}
