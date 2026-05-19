@@ -11,7 +11,7 @@ export default function TextBlock({ subHeadline, headline, desc }: TextblockProp
   return (
     <div>
       <SubHeadline>{subHeadline}</SubHeadline>
-      <h2 className="text-5xl">{headline}</h2>
+      <h2 className="text-3xl min-[426px]:text-5xl">{headline}</h2>
       {desc && <p>{desc}</p>}
     </div>
   );

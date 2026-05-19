@@ -2,7 +2,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import LenisProvider from '../components/lenis-provider';
-import Loading from "../components/loading";
 ---
 
 <!doctype html>
@@ -16,12 +15,13 @@ import Loading from "../components/loading";
 		<title>Pixum AI</title>
 		<link rel="stylesheet" href="">
 	</head>
-	<LenisProvider  client:load >
-	<body>
+	
+	<body data-theme="orange-noise">
+		<LenisProvider client:load >
 		<Header/>
 		<slot />
 		<Footer/>
+		</LenisProvider>
 	</body>
-	</LenisProvider>
 </html>
 

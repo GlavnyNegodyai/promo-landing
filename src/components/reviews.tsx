@@ -1,6 +1,6 @@
 import styles from "./reviews.module.css";
 import Button from "./button";
-import { useRef, useState } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y } from "swiper/modules";
@@ -34,15 +34,15 @@ function ReviewCard({ src, name, age, profit, quote }: ReviewCardProps) {
     <div>
       <div className={`${styles.card} rounded-4xl p-6`}>
         <div className="flex gap-6">
-          <img src={src} alt="" className="rounded-full" loading="lazy" />
+          <img src={src} alt="" className="rounded-full w-[50%]" loading="lazy" />
           <h3 className="font-[Bitcount_Double] text-5xl font-[350]">{`${name}, ${age}`}</h3>
         </div>
         <p
-          className={`${styles["profit"]} font-[Bitcount] text-4xl py-3 font-[350]`}
+          className={`${styles["profit"]} font-[Bitcount] text-5xl py-3 font-[350]`}
         >
-          {profit}
+          ~{profit}
         </p>
-        <p className="text-2xl">{quote}</p>
+        <p className="text-xl">{quote}</p>
       </div>
     </div>
   );
@@ -99,86 +99,86 @@ function HashTitle() {
   const prefixRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const postfixRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [prefixWidths, setPrefixWidths] = useState<number[]>([]);
 
-useGSAP(() => {
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: elementRef.current,
-      start: "top 80%",
-      end: "bottom 20%",
-      toggleActions: "restart reverse play reverse",
+  useLayoutEffect(() => {
+    setPrefixWidths(prefixRefs.current.map((ref) => ref?.offsetWidth ?? 0));
+  }, []);
+
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: elementRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none play ",
+        },
+      });
+
+      prefixRefs.current.forEach((ref, i) => {
+        if (!ref) return;
+
+        tl.fromTo(
+          ref,
+          { opacity: 0 },
+          {
+            opacity: 0.8,
+            duration: 1.4,
+            ease: "power2.out",
+          },
+          0,
+        );
+      });
+
+      textRefs.current.forEach((ref, i) => {
+        if (!ref) return;
+
+        tl.fromTo(
+          ref,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 1.4,
+            scrambleText: {
+              text: scrambledItems[i].text,
+              chars: "upperCase",
+              speed: 0.4,
+            },
+            ease: "power2.out",
+          },
+          0,
+        );
+      });
+
+      postfixRefs.current.forEach((ref, i) => {
+        if (!ref) return;
+
+        tl.fromTo(
+          ref,
+          { opacity: 0 },
+          {
+            opacity: 0.8,
+            duration: 1.4,
+            ease: "power2.out",
+          },
+          0,
+        );
+      });
     },
-  });
-
-  prefixRefs.current.forEach((ref, i) => {
-    if (!ref) return;
-
-    tl.fromTo(
-      ref,
-      { opacity: 0 },
-      {
-        opacity: .8,
-        duration: 1.4,
-        scrambleText: {
-          text: scrambledItems[i].prefix,
-          chars: "upperCase",
-          speed: 0.4,
-        },
-        ease: "power2.out",
-      },
-      0,
-    );
-  });
-
-  textRefs.current.forEach((ref, i) => {
-    if (!ref) return;
-
-    tl.fromTo(
-      ref,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 1.4,
-        scrambleText: {
-          text: scrambledItems[i].text,
-          chars: "upperCase",
-          speed: 0.4,
-        },
-        ease: "power2.out",
-      },
-      0,
-    );
-  });
-
-  postfixRefs.current.forEach((ref, i) => {
-    if (!ref) return;
-
-    tl.fromTo(
-      ref,
-      { opacity: 0 },
-      {
-        opacity: .8,
-        duration: 1.4,
-        scrambleText: {
-          text: scrambledItems[i].hash,
-          speed: 0.4,
-        },
-        ease: "power2.out",
-      },
-      0,
-    );
-  });
-});
+    { scope: elementRef, dependencies: [] },
+  );
 
   return (
     <h2
-      className="text-8xl font-[Bitcount] font-light top-0 mb-8"
+      className="text-6xl min-[425px]:text-7xl md:text-9xl lg:text-8xl font-[Bitcount] font-light top-0 mb-8"
       ref={elementRef}
     >
       {preScrambledItems.map((item, i) => (
         <div key={item.text} className="relative">
           <span
-            className="absolute -left-144"
+            className="absolute left-0"
+            style={{ left: `-${prefixWidths[i] ?? 0}px`, opacity: 0 }}
             ref={(el) => {
               prefixRefs.current[i] = el;
             }}
@@ -188,6 +188,7 @@ useGSAP(() => {
 
           <span
             className="text-(--white)"
+            style={{ opacity: 0 }}
             ref={(el) => {
               textRefs.current[i] = el;
             }}
@@ -197,6 +198,7 @@ useGSAP(() => {
 
           <span
             className="absolute"
+            style={{ opacity: 0 }}
             ref={(el) => {
               postfixRefs.current[i] = el;
             }}
@@ -246,16 +248,18 @@ export default function Reviews() {
 
   return (
     <section
-      className={`${styles.reviews} py-18  relative overflow-hidden`}
+      className={`${styles.reviews} py-10 min-[426px]:py-18 px-8 relative overflow-hidden`}
       id="reviews"
     >
-      <div className="container mx-auto grid grid-cols-[3fr_2fr]">
-        <div>
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-0">
+        <div className="max-lg:flex max-lg:flex-col">
           <HashTitle />
-          <Button className="pl-12 bg-(--green)">Join now</Button>
+          <Button className="pl-12 bg-(--green) w-fit" isForForm>
+            Join now
+          </Button>
         </div>
         <div className="flex flex-col-reverse items-center gap-6 reviews-cards relative">
-          <div className="grid grid-cols-2 gap-3 text-5xl font-[Bitcount]">
+          <div className="grid grid-cols-2 gap-3 text-3xl min-[426px]:text-5xl font-[Bitcount]">
             <button
               ref={prevRef}
               className={`${styles["button"]} rounded-full w-16 h-16 flex items-center justify-start p-4 pl-5`}
@@ -319,14 +323,13 @@ export default function Reviews() {
               slideRef.current = swiper.slides[swiper.activeIndex];
               animateSLides(currentSlide, slideRef.current);
             }}
-            className="min-w-0 w-full"
+            className={`${styles.reviewsSwiper} min-w-0`}
             modules={[A11y, EffectCards]}
             effect="cards"
             grabCursor={true}
             slidesPerView={1}
             initialSlide={1}
             speed={450}
-            style={{ width: 360 }}
             navigation={{
               prevEl: prevRef.current,
               nextEl: nextRef.current,
@@ -348,18 +351,18 @@ export default function Reviews() {
                 src={img1.src}
                 name="Anna"
                 age="24"
-                profit="$2,100"
-                quote="Pirate ipsum matey scallywag rum brigantine. Keelhaul bilge rat marooned."
+                profit="$8,100"
+                quote="I started with no big expectations, but this helped me finally build some breathing room. For the first time in a while, I feel like my plans are moving forward instead of just sitting in my notes."
               />
             </SwiperSlide>
 
             <SwiperSlide>
               <ReviewCard
                 src={img2.src}
-                name="Johny"
+                name="Ethan"
                 age="26"
-                profit="$1,500"
-                quote="Pirate ipsum arrgh bounty warp jack. Lee line heave chantey rat lugsail shiver pounders."
+                profit="$7,500"
+                quote="I used the extra earnings to reach a goal I had been putting off for months — upgrading my workspace. It felt good to earn toward something real and actually make it happen."
               />
             </SwiperSlide>
 
@@ -367,9 +370,9 @@ export default function Reviews() {
               <ReviewCard
                 src={img3.src}
                 name="Mark"
-                age="31"
-                profit="$3,400"
-                quote="Pirate ipsum galleon jib cutlass. Black spot ballast aye crow's nest."
+                age="41"
+                profit="$20,400"
+                quote="What surprised me most was how steady it felt. I’m used to side income being unpredictable, but this gave me a clear reason to stay consistent and take my financial goals more seriously."
               />
             </SwiperSlide>
           </Swiper>

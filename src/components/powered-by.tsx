@@ -7,11 +7,14 @@ import img3 from "../assets/company-logos/Vector.svg";
 export default function PoweredBy() {
   return (
     <section className="grey-background">
-      <div className={`${styles.grid} text-(--white) py-5 container mx-auto`}>
-        <h2 className="uppercase font-[Bitcount] text-3xl">
+      <div
+        className={`${styles.grid} text-(--white) py-5 px-6 container mx-auto text-center lg:text-left gap-2`}
+      >
+        <h2 className="uppercase font-[Bitcount] lg:text-4xl text-3xl">
           Powered by leadfing financial platforms
         </h2>
-        <ul className="flex items-center justify-between">
+
+        <ul className="flex items-center justify-center lg:justify-between gap-4">
           <li>
             <img src={img1.src} alt="" height={55} width={280} loading="lazy" />
           </li>

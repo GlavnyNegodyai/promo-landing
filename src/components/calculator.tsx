@@ -18,7 +18,7 @@ function DepositInput({
       <span className="text-(--orange) px-2 py-1">$</span>
       <input
         type="number"
-        className={`${styles["number-input"]} w-30`}
+        className={`${styles["number-input"]} w-full sm:w-30`}
         defaultValue={`${defaultDeposit}`}
         onChange={(e) => setDeposit(Number(e.currentTarget.value))}
         onBlur={(e) => {
@@ -138,7 +138,6 @@ const animateLoading = contextSafe((loading: boolean) => {
     gsap.to(titleRef.current, {
       backgroundColor: "var(--green)",
       borderRadius: "0.75rem",
-      paddingInline: "0.5rem",
       color: "transparent",
       duration: 0.3,
     });
@@ -153,7 +152,6 @@ const animateLoading = contextSafe((loading: boolean) => {
     gsap.to(titleRef.current, {
       backgroundColor: "transparent",
       color: "var(--green)",
-      paddingInline: "0rem",
       duration: 0.3,
     });
 
@@ -190,44 +188,64 @@ const animateLoading = contextSafe((loading: boolean) => {
   }
 
   return (
-    <section className="orange-background px-8 py-12 pb-18" id="calc">
-      <div className={`container mx-auto ${styles["calculator-wrapper"]}`}>
+    <section
+      className="orange-background px-6 py-10 min-[426px]:pb-18 min-[426px]:pt-12"
+      id="calc"
+    >
+      <div
+        className={`
+      container mx-auto
+      flex flex-col lg:flex-row
+      gap-10 lg:gap-20
+      ${styles["calculator-wrapper"]}
+    `}
+      >
         <div>
           <SubHeadline>calculator</SubHeadline>
-          <h2 className="text-5xl pb-6">Pirate ipsum league spanker shot.</h2>
+          <h2 className="text-3xl min-[426px]:text-5xl pb-6">
+            Capital in. Intelligence out.
+          </h2>
           <p className="text-(--white)">
-            Pirate ipsum arrgh bounty warp jack. Jolly parrel keelhaul spyglass
-            hogshead seven jones' blow gangway tea. Jolly lee arrgh belaying fer
-            deck quarterdeck cup spanish.
+            Drop your starting position. Lock in your timeframe. Behind the
+            scenes, our model strips market chaos into clean, executable
+            signals. What you see is a projection of compounded precision, not
+            hopeful marketing. Tweak the inputs. Watch the projection lock in.
+            Trade the future, not the noise.
           </p>
         </div>
 
-        <div className={`bg-(--black) p-6 pt-8 rounded-3xl text-(--white)`}>
+        <div className="bg-(--black) p-4 sm:p-6 sm:pt-8 rounded-3xl text-(--white) min-w-0">
           <h3
             ref={titleRef}
-            className={`w-fit font-[Bitcount_Double] text-(--green) text-5xl font-light mb-6 whitespace-nowrap ${styles.profit}`}
+            className={`w-fit font-[Bitcount_Double] text-(--green) text-4xl sm:text-5xl font-light mb-6 break-all ${styles.profit}`}
           >
             ~{profit.min}-{profit.max}$
           </h3>
 
           <div>
-            <div className="mb-3 flex items-center gap-12">
-              <p className="text-3xl font-light mb-2">Deposit</p>
+            <div className="mb-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-12">
+              <p className="text-2xl sm:text-3xl font-light mb-0 sm:mb-2">
+                Capital
+              </p>
               <DepositInput
                 setDeposit={setDeposit}
                 defaultDeposit={defaultDeposit}
               />
             </div>
 
-            <div className="flex items-center gap-12 mb-6">
-              <label htmlFor="duration-range" className="text-3xl font-light">
-                Duration
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-12 mb-6">
+              <label
+                htmlFor="duration-range"
+                className="text-2xl sm:text-3xl font-light"
+              >
+                Timeline
               </label>
               <RangeSlider setDuration={setDuration} />
             </div>
+
             <Button
               ref={buttonRef}
-              className="bg-(--green) text-(--white) px-8"
+              className="bg-(--green) text-(--white) px-6 w-full sm:w-auto"
               onClick={computeProfit}
               disabled={isLoading}
             >

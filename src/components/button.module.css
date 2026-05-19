@@ -3,4 +3,17 @@
   border-radius: calc(var(--spacing) * 4);
   text-transform: capitalize;
   font-weight: 600;
+  transition: 0.25s ease;
+}
+
+.button:hover {
+  background-color: var(--orange);
+  color: var(--white);
+  border-color: var(--orange);
+}
+
+.button:focus{
+    background-color: var(--black);
+    color: var(--orange);
+    border-color: var(--orange);
 }

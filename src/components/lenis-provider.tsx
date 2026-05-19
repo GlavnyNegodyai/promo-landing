@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+
 import { ReactLenis } from "lenis/react";
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {

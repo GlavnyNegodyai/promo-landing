@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <svg className="w-full h-full absolute">
         <defs>
-          <mask id="footerMask">
+          <mask id="footer-mask">
             <rect width="100%" height="100%" fill="#fff" />
             <g fontWeight="400" fontFamily="Bitcount, serif">
               <text
@@ -25,7 +25,7 @@ export default function Footer() {
           width="100%"
           height="100%"
           fill="#1d1d1d"
-          mask="url(#footerMask)"
+          mask="url(#footer-mask)"
         />
       </svg>
       <div

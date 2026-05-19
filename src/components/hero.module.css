@@ -25,7 +25,8 @@
   opacity: 0.9;
 }
 
-@media(max-width: 1024px){
+
+@media (orientation: portrait) {
   .hero__content-wrap {
     background-size: auto 100%;
   }

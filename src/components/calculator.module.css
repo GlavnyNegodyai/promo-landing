@@ -1,7 +1,12 @@
 .calculator-wrapper{
   display: grid;
   grid-template-columns: 3fr 5fr;
-  gap: calc(var(--spacing) * 20);
+}
+
+@media (max-width: 768px){
+  .calculator-wrapper{
+    grid-template-columns: 1fr;
+  }
 }
 
 .number-input {

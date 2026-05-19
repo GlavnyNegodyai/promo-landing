@@ -2,13 +2,14 @@ import Button from "./button";
 import styles from "./hero.module.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useLayoutEffect, useRef } from "react";
+import { useRef, useCallback, useState } from "react";
 import { useLenis } from "lenis/react";
 import { useEffect } from "react";
 import img1 from "../assets/hero/hero-person.webp";
 import coinImg1 from "../assets/hero/bit.svg";
 import coinImg2 from "../assets/hero/dol.svg";
 import coinImg3 from "../assets/hero/eth.svg";
+
 
 type BackgroundTextProps = {
   x: string;
@@ -19,16 +20,20 @@ type BackgroundTextProps = {
 };
 
 function BackgroundText({ x, dy, fontSize, fill, ref }: BackgroundTextProps) {
-  return (
-    <text x={x} y="100%" dy={dy} fontSize={fontSize} fill={fill} ref={ref}>
-      /WALL STREET/NASDAQ/NEW YORK STOCK EXCHANGE/GOLDMAN SACHS/JPMORGAN
-      CHASE/WALL STREET/NASDAQ/NEW YORK STOCK EXCHANGE/GOLDMAN SACHS/JPMORGAN
-      CHASE
-    </text>
-  );
+  
+
+    return (
+      <text x={x} y="100%" dy={dy} fontSize={fontSize} fill={fill} ref={ref}>
+        /WALL STREET/NASDAQ/NEW YORK STOCK EXCHANGE/GOLDMAN SACHS/JPMORGAN
+        CHASE/WALL STREET/NASDAQ/NEW YORK STOCK EXCHANGE/GOLDMAN SACHS/JPMORGAN
+        CHASE
+      </text>
+    );
 }
 
 export default function Hero() {
+  const isPortraitRef = useRef(false);
+
   const lenis = useLenis();
   const isScrolledRef = useRef<boolean>(false);
   const heroRef = useRef<HTMLElement | null>(null);
@@ -43,55 +48,82 @@ export default function Hero() {
   const coinRef = useRef<(HTMLDivElement | null)[]>([]);
 
   function lockScroll() {
+    if (isScrolledRef.current) return;
     if (!lenis) return;
+    document.body.style.overflow = "hidden";
     isScrolledRef.current = true;
     lenis.stop();
   }
 
   function unlockScroll() {
+    if (!isScrolledRef.current) return;
     if (!lenis) return;
-    lenis.start();
+    document.body.style.overflow = "";
     isScrolledRef.current = false;
+    lenis.start();
   }
 
   function snapTo(target: number, onComplete?: () => void) {
     if (!lenis) return;
-    console.log("snapTo called");
     lockScroll();
-
+    console.log("oh snap");
     lenis.scrollTo(target, {
-      duration: 0.5,
+      immediate: true,
       force: true,
-      onComplete: () => {
-        onComplete?.();
-        unlockScroll();
-      },
     });
   }
+
+  const checkRatio = useCallback(() => {
+    isPortraitRef.current = window.innerHeight > window.innerWidth;
+  }, []);
+
+  useEffect(() => {
+    checkRatio();
+
+    window.addEventListener("resize", checkRatio);
+
+    return () => window.removeEventListener("resize", checkRatio);
+  }, [checkRatio]);
 
   useGSAP(
     () => {
       let heroTl = gsap.timeline({
         scrollTrigger: {
+          invalidateOnRefresh: true,
           trigger: heroRef.current,
           start: "0% top",
           end: "80% bottom",
           toggleActions: "play play reverse reverse",
           onEnter: () => {
+            checkRatio();
             if (!heroRef.current) return;
-            const bottomScroll =
-              heroRef.current.offsetTop +
-              heroRef.current.offsetHeight -
-              window.innerHeight;
-            snapTo(bottomScroll);
+            const heroPos =
+              heroRef.current.offsetTop + heroRef.current.offsetHeight;
+            if ((heroPos > window.scrollY) && !isScrolledRef.current) {
+              const bottomScroll = heroPos - window.innerHeight;
+              snapTo(bottomScroll - 130);
+            }
           },
           onEnterBack: () => {
-            firstSlide.current?.classList.remove("hidden");
-            snapTo(0);
+            checkRatio();
+            if (!isScrolledRef.current) {
+              firstSlide.current?.classList.remove("hidden");
+              snapTo(0);
+            }
           },
           onLeaveBack: () => {
             firstSlide.current?.classList.remove("hidden");
-          }
+          },
+        },
+        onComplete: () => {
+          unlockScroll();
+        },
+        onStart: () => {
+          checkRatio();
+        },
+        onReverseComplete: () => {
+          checkRatio();
+          unlockScroll();
         },
       });
       heroTl
@@ -101,9 +133,11 @@ export default function Hero() {
           duration: 0.5,
           ease: `power1.inOut`,
           onStart: () => {
+            checkRatio();
             secondSlide.current?.classList.remove("hidden");
           },
           onReverseComplete: () => {
+            checkRatio();
             secondSlide.current?.classList.add("hidden");
           },
         })
@@ -135,10 +169,11 @@ export default function Hero() {
         .to(
           heroWrapperRef.current,
           {
-            backgroundSize: "120% auto",
+            backgroundSize: () =>
+              isPortraitRef.current ? "auto 120%" : "120% auto",
             backgroundPosition: "100% 20%",
             duration: 0.5,
-            ease: `power1.inOut`,
+            ease: "power1.inOut",
             onComplete: () => {
               firstSlide.current?.classList.add("hidden");
             },
@@ -211,7 +246,7 @@ export default function Hero() {
   const bgTexts = [
     {
       x: "0",
-      dy: "15",
+      dy: "0",
       fontSize: 160,
       fill: "rgba(0, 0, 0, 1)",
     },
@@ -223,13 +258,13 @@ export default function Hero() {
     },
     {
       x: "0",
-      dy: "-215",
+      dy: "-210",
       fontSize: 128,
       fill: "rgba(0, 0, 0, .25)",
     },
     {
       x: "0",
-      dy: "-320",
+      dy: "-315",
       fontSize: 128,
       fill: "rgba(0, 0, 0, .125)",
     },
@@ -237,6 +272,7 @@ export default function Hero() {
 
   const horizontalLoop = contextSafe((el: SVGTextElement | null, i: number) => {
     if (!el) return;
+    gsap.killTweensOf(el);
     const textWidth = el.getComputedTextLength() ?? 0;
 
     if (i % 2 === 0) {
@@ -260,10 +296,16 @@ export default function Hero() {
     }
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     itemsRef.current.forEach((el, i) => {
       horizontalLoop(el, i);
     });
+
+
+  return () => {
+    itemsRef.current.forEach((el) => {
+      if (el) gsap.killTweensOf(el);
+    })};
   }, []);
 
   return (
@@ -298,14 +340,19 @@ export default function Hero() {
               mask="url(#heroMask)"
             />
           </svg>
-          <div className="absolute w-full h-full flex items-center pl-12">
+          <div className="absolute w-full h-full flex items-center px-6 sm:px-8 lg:pl-12">
             <div className="container mx-auto">
-              <h1 ref={firstHeadline} className="">
-                <p className="text-8xl font-medium">Trading was for</p>
-                <p className="uppercase font-[Bitcount] text-(--orange) text-[184px] flex gap-15">
-                  <span>the</span>
-                  <span>few</span>
-                </p>
+              <h1 ref={firstHeadline}>
+                <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium">
+                  Trading was for
+                </span>
+
+                <span className="block uppercase font-[Bitcount] text-(--orange) text-[76px] sm:text-[110px] md:text-[140px] lg:text-[184px]">
+                  <span className="inline-flex gap-4 sm:gap-8 lg:gap-15">
+                    <span>the</span>
+                    <span>few</span>
+                  </span>
+                </span>
               </h1>
             </div>
           </div>
@@ -313,26 +360,34 @@ export default function Hero() {
         <div
           ref={secondSlide}
           style={{ opacity: 0 }}
-          className="hidden relative h-full overflow-x-hidden overflow-x-hidden"
+          className="hidden relative h-full overflow-hidden"
         >
-          <div className="container mx-auto flex items-center relative z-10 h-full">
-            <div>
+          <div className="container mx-auto flex items-center relative z-10 h-full px-6">
+            <div className="pt-15 lg:pt-0">
               <h1>
-                <p className="font-medium text-8xl">And now its for</p>
-                <p className="uppercase font-[Bitcount] text-[296px] text-(--green) font-medium leading-62.5">
+                <span className="block font-medium text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
+                  And now its for
+                </span>
+
+                <span className="block uppercase font-[Bitcount] text-[128px] sm:text-[170px] md:text-[220px] lg:text-[296px] text-(--green) font-medium leading-none lg:leading-62.5">
                   you
-                </p>
+                </span>
               </h1>
-              <Button className="text-(--black) bg-(--green)">
-                <p>Join Now</p>
+              <Button className="text-(--black) bg-(--green)" isForForm>
+                Join Now
               </Button>
             </div>
-            <div className="absolute bottom-0 right-0 w-[70%]">
+            <div className="absolute bottom-0 right-0 w-full h-full min-[426px]:w-[70%] min-[426px]:h-auto">
               <div
                 ref={(el) => {
                   if (el) coinRef.current[1] = el;
                 }}
-                className="flex h-70 w-70 items-center justify-center rounded-full absolute z-100 top-[30%] left-[16%]"
+                className="
+                  flex h-40 w-40 min-[426px]:h-70 min-[426px]:w-70
+                  items-center justify-center rounded-full absolute z-100
+                  top-[18%] left-[-10%]
+                  min-[426px]:top-[30%] min-[426px]:left-[16%]
+                "
               >
                 <img
                   src={coinImg1.src}
@@ -340,11 +395,17 @@ export default function Hero() {
                   className="w-[50%] h-[50%] relative"
                 />
               </div>
+
               <div
                 ref={(el) => {
                   if (el) coinRef.current[2] = el;
                 }}
-                className="flex h-65 w-65 items-center justify-center rounded-full absolute z-1001 bottom-[30%] right-[5%]"
+                className="
+                  flex h-36 w-36 min-[426px]:h-65 min-[426px]:w-65
+                  items-center justify-center rounded-full absolute z-1001
+                  bottom-[20%] right-[5%]
+                  min-[426px]:bottom-[30%] min-[426px]:right-[5%]
+                "
               >
                 <img
                   src={coinImg2.src}
@@ -352,11 +413,17 @@ export default function Hero() {
                   className="w-[50%] h-[50%] relative"
                 />
               </div>
+
               <div
                 ref={(el) => {
                   if (el) coinRef.current[3] = el;
                 }}
-                className="flex h-60 w-60 items-center justify-center rounded-full absolute z-1001 top-[-8%] right-[20%]"
+                className="
+                  flex h-32 w-32 min-[426px]:h-60 min-[426px]:w-60
+                  items-center justify-center rounded-full absolute z-1001
+                  top-[10%] right-[20%]
+                  min-[426px]:top-[-8%] min-[426px]:right-[20%]
+                "
               >
                 <img
                   src={coinImg3.src}
@@ -364,10 +431,11 @@ export default function Hero() {
                   className="w-[50%] h-[50%] relative"
                 />
               </div>
+
               <img
                 src={img1.src}
                 alt=""
-                className="w-full relative z-1000 pointer-events-none"
+                className="hidden min-[426px]:block w-full relative z-1000 pointer-events-none"
               />
             </div>
           </div>

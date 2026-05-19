@@ -49,7 +49,7 @@ export const Testimonial = ({
 }: TestimonialProps) => {
   return (
     <li ref={refSetter} className="hidden">
-      <p className="text-3xl font-light mb-13 text-justify indent-10">
+      <p className="h-50 min-[426px]:text-3xl text-2xl font-light mb-6 min-[426px]:mb-12 text-justify indent-10">
         <span className={styles["masked-text--left"]}>{textLeft}</span>
         <span className={styles["main-text"]}>{textMain}</span>
         <span className={styles["masked-text--right"]}>{textRight}</span>
@@ -65,8 +65,8 @@ const testimonials = [
     textLeft: "im impressed how ",
     textMain: "Pixum`s AI agent shows notable precision in trading",
     textRight: ", securing...",
-    author: "Johny Depp",
-    role: "Senior Editor, BBC",
+    author: "Rory Cellan-Jones",
+    role: "Technology Correspondent, BBC",
     svg: (
       <svg
         width="560"
@@ -98,11 +98,11 @@ const testimonials = [
     ),
   },
   {
-    textLeft: "market analysts highlight ",
+    textLeft: "analysts highlight ",
     textMain: "remarkable consistency in algorithmic decision-making",
     textRight: ", even under pressure...",
-    author: "Bloomberg",
-    role: "Financial Media",
+    author: "Emily Chang",
+    role: "Anchor & Editor, Bloomberg",
     svg: (
       <svg
         width="164"
@@ -160,11 +160,11 @@ const testimonials = [
     ),
   },
   {
-    textLeft: "experts emphasize ",
-    textMain: "strong adaptability across shifting economic conditions",
-    textRight: ", reinforcing confidence...",
-    author: "The Economist",
-    role: "Global Affairs & Finance",
+    textLeft: "What stands out is ",
+    textMain: "how the AI adapts across shifting economic conditions",
+    textRight: ", without missing a beat.",
+    author: "Clive Crook",
+    role: "Senior Editor, The Economist",
     svg: (
       <svg
         width="269"
@@ -183,11 +183,11 @@ const testimonials = [
     ),
   },
   {
-    textLeft: "reports indicate ",
-    textMain: "robust performance backed by data-driven strategies",
-    textRight: ", setting new standards...",
-    author: "The Wall Street Journal",
-    role: "Business & Markets",
+    textLeft: "I've personally seen ",
+    textMain: "robust performance driven by data-first strategies",
+    textRight: ", setting a new pace.",
+    author: "Gerard Baker",
+    role: "Columnist, The Wall Street Journal",
     svg: (
       <svg
         width="538"
@@ -242,11 +242,12 @@ export default function Press() {
     currentBtn.classList.add(styles.active);
 
     setOpenedElement(currentIndex);
+    openedElementRef.current = currentIndex;
   };
 
   useEffect(() => {
     openedElementRef.current = openedElement;
-  }, [openedElement]);
+  }, []);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -269,9 +270,15 @@ export default function Press() {
   }, [isStopped]);
 
   return (
-    <section className="pt-12 pb-18" id="press">
-      <div className="container mx-auto grid gap-18 grid-cols-[5fr_3fr]">
-        <div className="mt-6 flex flex-col justify-between min-h-100">
+    <section className="py-10 min-[426px]:pb-18 min-[426px]:pt-12" id="press">
+      <div
+        className="
+          container mx-auto
+          grid gap-8 lg:gap-18
+          grid-cols-1 lg:grid-cols-[5fr_3fr] px-6
+        "
+      >
+        <div className="order-2 lg:order-1 flex flex-col justify-between min-h-100 min-[426px]:mt-6">
           <ul>
             {testimonials.map((t, i) => (
               <Testimonial
@@ -287,12 +294,12 @@ export default function Press() {
               />
             ))}
           </ul>
-          <ul className="grid grid-cols-4 gap-9">
+          <ul className="grid grid-cols-2 mt-4 md:grid-cols-4 gap-6 md:gap-9">
             {testimonials.map((t, i) => (
               <li key={i}>
                 <PressOption
                   onButtonInteraction={() => {
-                    handlePressChange(i, openedElement);
+                    handlePressChange(i, openedElementRef.current);
                     setIsStopped(true);
                   }}
                   btnRef={(el) => {
@@ -306,9 +313,11 @@ export default function Press() {
           </ul>
         </div>
 
-        <div>
+        <div className="order-1 lg:order-2">
           <SubHeadline>the press</SubHeadline>
-          <h2 className="text-5xl">Trusted by press worldwide</h2>
+          <h2 className="text-3xl min-[426px]:text-5xl">
+            Trusted by press worldwide
+          </h2>
         </div>
       </div>
     </section>
