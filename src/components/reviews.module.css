@@ -16,7 +16,7 @@
 }
 
 .reviewsSwiper {
-  width: 360px;
+  width: 380px;
 }
 
 @media(max-width: 375px){
@@ -25,7 +25,7 @@
 }
 
 .card {
-  height: 360px;
+  height: 510px;
 }
 }
 
@@ -46,12 +46,12 @@
   background: var(--orange);
 }
 
-:global(.swiper-slide):nth-child(3n - 1) .profit {
+:global(.swiper-slide):nth-child(3n - 1) .info {
   color: var(--green);
 }
 
-:global(.swiper-slide):nth-child(3n + 1) .profit,
-:global(.swiper-slide):nth-child(3n) .profit {
+:global(.swiper-slide):nth-child(3n + 1) .info,
+:global(.swiper-slide):nth-child(3n) .info {
   color: var(--white);
 }
 

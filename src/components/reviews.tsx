@@ -24,23 +24,26 @@ gsap.registerPlugin(ScrambleTextPlugin);
 type ReviewCardProps = {
   src: string;
   name: string;
-  age: string;
-  profit: string;
+  company: string;
+  info: string;
   quote: string;
 };
 
-function ReviewCard({ src, name, age, profit, quote }: ReviewCardProps) {
+function ReviewCard({ src, name, company, info, quote }: ReviewCardProps) {
   return (
     <div>
       <div className={`${styles.card} rounded-4xl p-6`}>
-        <div className="flex gap-6">
-          <img src={src} alt="" className="rounded-full w-[50%]" loading="lazy" />
-          <h3 className="font-[Bitcount_Double] text-5xl font-[350]">{`${name}, ${age}`}</h3>
+        <div className="flex gap-3 sm:gap-6 items-center">
+          <img src={src} alt="" className="rounded-full w-[50%] h-[50%] max-w-[110px] max-h-[110px]" loading="lazy" />
+          <div>
+          <h3 className="font-[Bitcount_Double] text-4xl sm:text-5xl font-[350]">{name}</h3>
+          <p className="text-xl">{company}</p>
+          </div>
         </div>
         <p
-          className={`${styles["profit"]} font-[Bitcount] text-5xl py-3 font-[350]`}
+          className={`${styles["info"]} font-[Bitcount] text-5xl py-3 font-[350]`}
         >
-          ~{profit}
+          {info}
         </p>
         <p className="text-xl">{quote}</p>
       </div>
@@ -52,22 +55,22 @@ const scrambledItems = [
   {
     prefix: "a2cf2424d9",
     text: "look",
-    hash: "2cf24dba5fb0a2cf24dba5fb0",
+    hash: "2cf24dba5fb0a30e26e83b2ac5b9e29e",
   },
   {
     prefix: "ba5fb024d1",
     text: "what_our",
-    hash: "9f86d08182cf24dba5fb0a2cf24dba5fb0",
+    hash: "9f86d081884c7d659a2feaa0c55ad015",
   },
   {
     prefix: "7a2cf24db3",
     text: "users",
-    hash: "5d41402abc2cf24dba5fb0a2cf24dba5fb0",
+    hash: "5d41402abc4b2a76b9719d911017c592",
   },
   {
     prefix: "0a2cf24dba",
     text: "say",
-    hash: "7d793037a2cf24dba5fb0a2cf24dba5fb0",
+    hash: "7d793037a0760186574b0282f2f435e7",
   },
 ];
 
@@ -75,22 +78,22 @@ const preScrambledItems = [
   {
     prefix: "9f86d08188",
     text: "a2cf",
-    hash: "7a2cf24dba5fb0a2cf24dba50",
+    hash: "a6f1c3e91b8d4a72f0c9e5b631d28a04",
   },
   {
     prefix: "e3b0c44298",
     text: "d08182cf",
-    hash: "2cf24dba5f9f86d08182cf24dba5fb0a2cf24dba5fb0",
+    hash: "e3b0c44298fc1c149afbf4c8996fb924",
   },
   {
     prefix: "5d41402abc",
     text: "24dba",
-    hash: "9f86d08182cf24dba5fb0a2cf24dba5fb0",
+    hash: "0cc175b9c0f1b6a831c399e269772661",
   },
   {
     prefix: "7d793037a2",
     text: "5fb",
-    hash: "2cf24dba5fb0a2cf24dba5fb0a2cf24dba5fb0",
+    hash: "92eb5ffee6ae2fec3ad71c777531578f",
   },
 ];
 
@@ -112,18 +115,22 @@ function HashTitle() {
           trigger: elementRef.current,
           start: "top 80%",
           end: "bottom 20%",
-          toggleActions: "play none play ",
+          toggleActions: "play reverse play reverse",
         },
       });
 
       prefixRefs.current.forEach((ref, i) => {
         if (!ref) return;
-
         tl.fromTo(
           ref,
           { opacity: 0 },
           {
-            opacity: 0.8,
+            scrambleText: {
+              text: scrambledItems[i].prefix,
+              chars: "upperCase",
+              speed: 0.4,
+            },
+            opacity: 1,
             duration: 1.4,
             ease: "power2.out",
           },
@@ -133,18 +140,17 @@ function HashTitle() {
 
       textRefs.current.forEach((ref, i) => {
         if (!ref) return;
-
         tl.fromTo(
           ref,
           { opacity: 0 },
           {
-            opacity: 1,
-            duration: 1.4,
             scrambleText: {
               text: scrambledItems[i].text,
               chars: "upperCase",
               speed: 0.4,
             },
+            opacity: 1,
+            duration: 1.4,
             ease: "power2.out",
           },
           0,
@@ -153,12 +159,16 @@ function HashTitle() {
 
       postfixRefs.current.forEach((ref, i) => {
         if (!ref) return;
-
         tl.fromTo(
           ref,
           { opacity: 0 },
           {
-            opacity: 0.8,
+            scrambleText: {
+              text: scrambledItems[i].prefix,
+              chars: "upperCase",
+              speed: 0.4,
+            },
+            opacity: 1,
             duration: 1.4,
             ease: "power2.out",
           },
@@ -252,10 +262,10 @@ export default function Reviews() {
       id="reviews"
     >
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-0">
-        <div className="max-lg:flex max-lg:flex-col">
+        <div className="max-lg:flex max-lg:flex-col my-10">
           <HashTitle />
           <Button className="pl-12 bg-(--green) w-fit" isForForm>
-            Join now
+            Start now
           </Button>
         </div>
         <div className="flex flex-col-reverse items-center gap-6 reviews-cards relative">
@@ -346,35 +356,35 @@ export default function Reviews() {
               slideShadows: false,
             }}
           >
-            <SwiperSlide>
-              <ReviewCard
-                src={img1.src}
-                name="Anna"
-                age="24"
-                profit="$8,100"
-                quote="I started with no big expectations, but this helped me finally build some breathing room. For the first time in a while, I feel like my plans are moving forward instead of just sitting in my notes."
-              />
-            </SwiperSlide>
+<SwiperSlide>
+  <ReviewCard
+    src={img1.src}
+    name="Laura"
+    company="DTC LLC"
+    info="+38% leads"
+    quote="M.Labs helped us move from random influencer outreach to a campaign built around the right creators, clear messaging, and measurable intent. The difference was visible from the first launch."
+  />
+</SwiperSlide>
 
-            <SwiperSlide>
-              <ReviewCard
-                src={img2.src}
-                name="Ethan"
-                age="26"
-                profit="$7,500"
-                quote="I used the extra earnings to reach a goal I had been putting off for months — upgrading my workspace. It felt good to earn toward something real and actually make it happen."
-              />
-            </SwiperSlide>
+<SwiperSlide>
+  <ReviewCard
+    src={img2.src}
+    name="Daniel"
+    company="NoBit Productions"
+    info="2.4x ROAS"
+    quote="The biggest value was speed and focus. We stopped wasting time on creators who looked good on paper but didn’t match the audience. M.Labs gave the campaign structure before we spent the budget."
+  />
+</SwiperSlide>
 
-            <SwiperSlide>
-              <ReviewCard
-                src={img3.src}
-                name="Mark"
-                age="41"
-                profit="$20,400"
-                quote="What surprised me most was how steady it felt. I’m used to side income being unpredictable, but this gave me a clear reason to stay consistent and take my financial goals more seriously."
-              />
-            </SwiperSlide>
+<SwiperSlide>
+  <ReviewCard
+    src={img3.src}
+    name="Mark"
+    company="Bikesterz LLC"
+    info="-31% CPA"
+    quote="For us, creator marketing became much easier to justify internally. M.Labs connected the creative side of influencer campaigns with the numbers leadership actually cares about."
+  />
+</SwiperSlide>
           </Swiper>
         </div>
       </div>

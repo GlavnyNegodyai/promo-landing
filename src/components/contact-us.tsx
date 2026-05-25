@@ -11,18 +11,19 @@ export default function ContactUs() {
         <SubHeadline>contact us</SubHeadline>
 
         <h2 className="text-3xl min-[426px]:text-5xl pb-6">
-          Your access starts with one move.
+          Your campaigns start with one move.
         </h2>
 
         <p>
-          Leave your details for our manager to contact
-          you shortly, confirm your setup, and guide you toward the platform
-          with a clear route from first contact to live AI trading. Built for
-          speed, precision, and calm execution while the market keeps moving.
+          Leave your details and we’ll get back to you shortly to discuss your
+          brand, campaign goals, and the type of creators you want to work with.
+          From the first contact, we help shape a clear route toward a campaign
+          built around relevance, strategy, and measurable results.
         </p>
 
         <p className="pt-4">
-          Minimum deposit: $250. The next move is already forming.
+          Tell us what you want to launch. We’ll help you find the right
+          creators for it.
         </p>
       </div>
 

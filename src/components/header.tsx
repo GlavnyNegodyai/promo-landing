@@ -21,7 +21,7 @@ export default function Header() {
   "
     >
       <h1 className="font-[Bitcount] text-xl lg:text-2xl font-medium uppercase">
-        Pixum AI
+        M.Labs
       </h1>
 
       <nav className="hidden lg:block">
@@ -30,10 +30,10 @@ export default function Header() {
             <a href="#about-us">About Us</a>
           </li>
           <li>
-            <a href="#calc">Profit Calculator</a>
+            <a href="#calc">Calculator</a>
           </li>
           <li>
-            <a href="#press">Press Reviews</a>
+            <a href="#press">Press</a>
           </li>
           <li>
             <a href="#reviews">User Reviews</a>
@@ -45,7 +45,7 @@ export default function Header() {
       </nav>
 
       <Button className="text-(--green) border-2 border-(--green)" isForForm>
-        <span>Join Now</span>
+        <span>Start now</span>
       </Button>
     </header>
   );

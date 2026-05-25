@@ -6,29 +6,29 @@ import { useGSAP } from "@gsap/react";
 
 const questionList = [
   {
-    question: "What happens after I leave my details?",
+    question: "How do you choose the right creators?",
     answer:
-      "After you submit the form, a manager will contact you to confirm your access, answer key questions, and guide you through the first step. No pressure. Just a clean route from interest to platform.",
+      "We look at audience fit, content style, platform relevance, engagement quality, and campaign goals. The point is not to find creators with the biggest numbers, but creators who can speak to the right people.",
   },
   {
-    question: "Why does a manager call me?",
+    question: "Can you help plan the campaign strategy?",
     answer:
-      "The call helps set up your access correctly. The manager explains how the platform works, what the AI does, and how to start with the required minimum deposit of $250.",
+      "Yes. M.Labs helps shape the campaign direction, from creator selection and messaging to platform mix and expected performance. The goal is to make the campaign clear before the budget is spent.",
   },
   {
-    question: "When do I get access to the platform?",
+    question: "Which platforms can campaigns run on?",
     answer:
-      "After the call and account setup, you receive access to the trading platform. From there, the AI can begin scanning market movement and working with available opportunities on your behalf.",
+      "Campaigns can be planned across major social platforms such as Instagram, TikTok, YouTube, and other channels depending on the brand, audience, and campaign objective.",
   },
   {
-    question: "Do I need trading experience?",
+    question: "How do you estimate campaign results?",
     answer:
-      "No. The platform is built for people who want advanced market technology without living inside charts all day. The AI handles the heavy analytical work while you keep the process simple.",
+      "Estimates are based on previous campaign data, selected platforms, campaign duration, budget, and expected audience behavior. They are not guarantees, but they help brands compare scenarios and plan with more confidence.",
   },
   {
-    question: "How does the AI help with trading?",
+    question: "Do you work with small brands?",
     answer:
-      "The AI reads market signals, reacts to movement, and helps execute trades with speed and discipline. It is designed to remove guesswork, reduce emotional decisions, and create a sharper path toward potential profit.",
+      "Yes. A strong creator campaign does not always need a huge brand presence. What matters more is a clear offer, the right audience, and creators who can make the message feel relevant.",
   },
 ];
 

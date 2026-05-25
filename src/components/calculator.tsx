@@ -7,11 +7,11 @@ import { useGSAP } from "@gsap/react";
 import styles from "./calculator.module.css";
 
 function DepositInput({
-  setDeposit,
-  defaultDeposit,
+  setBudget,
+  defaultBudget,
 }: {
-  setDeposit: (value: number) => void;
-  defaultDeposit: number;
+  setBudget: (value: number) => void;
+  defaultBudget: number;
 }) {
   return (
     <div className="text-3xl flex rounded-lg border-2 border-(--white)">
@@ -19,12 +19,12 @@ function DepositInput({
       <input
         type="number"
         className={`${styles["number-input"]} w-full sm:w-30`}
-        defaultValue={`${defaultDeposit}`}
-        onChange={(e) => setDeposit(Number(e.currentTarget.value))}
+        defaultValue={`${defaultBudget}`}
+        onChange={(e) => setBudget(Number(e.currentTarget.value))}
         onBlur={(e) => {
-          if (Number(e.currentTarget.value) < defaultDeposit) {
-            e.currentTarget.value = `${defaultDeposit}`;
-            setDeposit(defaultDeposit);
+          if (Number(e.currentTarget.value) < defaultBudget) {
+            e.currentTarget.value = `${defaultBudget}`;
+            setBudget(defaultBudget);
           }
         }}
       />
@@ -75,7 +75,7 @@ function RangeSlider({ setDuration }: Props) {
     tweenRef.current = gsap.to(proxy, {
       value: closestValue,
       duration: 0.2,
-      ease: "power2.out",
+      ease: "elastic.out(1, 0.8)",
       onUpdate: () => {
         el.value = String(proxy.value);
         updateRange(el);
@@ -121,9 +121,9 @@ function RangeSlider({ setDuration }: Props) {
 }
 
 export default function Calculator() {
-  const [profit, setProfit] = useState({ min: 1000, max: 1500 });
-  const defaultDeposit = 250;
-  const [deposit, setDeposit] = useState(defaultDeposit);
+  const [magicNumber, setMagicNumber] = useState({ min: 1000, max: 1500 });
+  const defaultBudget = 250;
+  const [budget, setBudget] = useState(defaultBudget);
   const [duration, setDuration] = useState(6);
   const [isLoading, setLoading] = useState(true);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
@@ -131,38 +131,38 @@ export default function Calculator() {
 
   const { contextSafe } = useGSAP();
 
-const animateLoading = contextSafe((loading: boolean) => {
-  if (!titleRef.current || !buttonRef.current) return;
+  const animateLoading = contextSafe((loading: boolean) => {
+    if (!titleRef.current || !buttonRef.current) return;
 
-  if (loading) {
-    gsap.to(titleRef.current, {
-      backgroundColor: "var(--green)",
-      borderRadius: "0.75rem",
-      color: "transparent",
-      duration: 0.3,
-    });
+    if (loading) {
+      gsap.to(titleRef.current, {
+        backgroundColor: "var(--green)",
+        borderRadius: "0.75rem",
+        color: "transparent",
+        duration: 0.3,
+      });
 
-    gsap.to(buttonRef.current, {
-      backgroundColor: "var(--grey)",
-      scale: 0.96,
-      opacity: 0.7,
-      duration: 0.3,
-    });
-  } else {
-    gsap.to(titleRef.current, {
-      backgroundColor: "transparent",
-      color: "var(--green)",
-      duration: 0.3,
-    });
+      gsap.to(buttonRef.current, {
+        backgroundColor: "var(--grey)",
+        scale: 0.96,
+        opacity: 0.7,
+        duration: 0.3,
+      });
+    } else {
+      gsap.to(titleRef.current, {
+        backgroundColor: "transparent",
+        color: "var(--green)",
+        duration: 0.3,
+      });
 
-    gsap.to(buttonRef.current, {
-      backgroundColor: "var(--green)",
-      scale: 1,
-      opacity: 1,
-      duration: 0.3,
-    });
-  }
-});
+      gsap.to(buttonRef.current, {
+        backgroundColor: "var(--green)",
+        scale: 1,
+        opacity: 1,
+        duration: 0.3,
+      });
+    }
+  });
 
   useEffect(() => {
     computeProfit();
@@ -176,13 +176,13 @@ const animateLoading = contextSafe((loading: boolean) => {
     setLoading(true);
     setTimeout(() => {
       const calculatedProfit =
-        Math.round((deposit * Math.PI) / ((21 - (9 + 10)) / 1.5)) *
-        duration; /* -What`s nine plus ten? -Twenty one? -you`re stupid! */
+        Math.round((budget * Math.PI) / 2) *
+        duration;
       const newProfitObj = {
         min: calculatedProfit - 42 * 2,
         max: calculatedProfit + 42 * 2,
       };
-      setProfit(newProfitObj);
+      setMagicNumber(newProfitObj);
       setLoading(false);
     }, 1000);
   }
@@ -203,33 +203,34 @@ const animateLoading = contextSafe((loading: boolean) => {
         <div>
           <SubHeadline>calculator</SubHeadline>
           <h2 className="text-3xl min-[426px]:text-5xl pb-6">
-            Capital in. Intelligence out.
+            Estimate reach. Forecast results.
           </h2>
           <p className="text-(--white)">
-            Drop your starting position. Lock in your timeframe. Behind the
-            scenes, our model strips market chaos into clean, executable
-            signals. What you see is a projection of compounded precision, not
-            hopeful marketing. Tweak the inputs. Watch the projection lock in.
-            Trade the future, not the noise.
+            Set your campaign budget, choose the campaign duration, and select
+            the number of platforms you want to use. The calculator uses
+            previous campaign performance to estimate potential clicks, leads,
+            or conversions before launch. It is not a promise. It is a practical
+            forecast to help you plan smarter, compare scenarios, and understand
+            what the right creator strategy can deliver.
           </p>
         </div>
 
         <div className="bg-(--black) p-4 sm:p-6 sm:pt-8 rounded-3xl text-(--white) min-w-0">
           <h3
             ref={titleRef}
-            className={`w-fit font-[Bitcount_Double] text-(--green) text-4xl sm:text-5xl font-light mb-6 break-all ${styles.profit}`}
+            className={`w-fit font-[Bitcount_Double] text-(--green) text-4xl sm:text-5xl font-light mb-6 break-all ${styles.magicNumber}`}
           >
-            ~{profit.min}-{profit.max}$
+            ~{magicNumber.min}-{magicNumber.max}
           </h3>
 
           <div>
             <div className="mb-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-12">
               <p className="text-2xl sm:text-3xl font-light mb-0 sm:mb-2">
-                Capital
+                Budget
               </p>
               <DepositInput
-                setDeposit={setDeposit}
-                defaultDeposit={defaultDeposit}
+                setBudget={setBudget}
+                defaultBudget={defaultBudget}
               />
             </div>
 

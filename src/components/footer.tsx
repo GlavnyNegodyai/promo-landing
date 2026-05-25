@@ -9,18 +9,17 @@ export default function Footer() {
             <rect width="100%" height="100%" fill="#fff" />
             <g fontWeight="400" fontFamily="Bitcount, serif">
               <text
-                x="-1686px"
+                x="2rem"
                 y="80px"
                 fontSize="144px"
                 fill="rgba(0, 0, 0, 1)"
               >
-                neural_net_registry.&lt;PIXUM_AI&gt;.from_pretrained("vision-core-v2.4-alpha",
-                cache_dir="/mnt/weights", strict=False)
+                &lt;M.Labs&gt;.from_campaign_brief("ad-v2.4", cache_dir="/mnt/audience-data", strict_fit=True)
               </text>
             </g>
           </mask>
         </defs>
-        <rect x="2rem" width="880px" height="100%" fill="#EC6519" />
+        <rect x="2rem" width="700px" height="100%" fill="#EC6519" />
         <rect
           width="100%"
           height="100%"
@@ -31,7 +30,7 @@ export default function Footer() {
       <div
         className={`${styles["footer__bottom"]} relative z-100 text-(--grey) p-6 mx-6 font-thin`}
       >
-        <p>© 2026 Pixum AI. All rights preserved.</p>
+        <p>© 2026 M.Labs. All rights preserved.</p>
       </div>
     </footer>
   );

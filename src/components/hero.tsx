@@ -2,13 +2,18 @@ import Button from "./button";
 import styles from "./hero.module.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef, useCallback, useState } from "react";
+import { useRef } from "react";
 import { useLenis } from "lenis/react";
 import { useEffect } from "react";
 import img1 from "../assets/hero/hero-person.webp";
-import coinImg1 from "../assets/hero/bit.svg";
-import coinImg2 from "../assets/hero/dol.svg";
-import coinImg3 from "../assets/hero/eth.svg";
+import coinImg1 from "../assets/hero/tiktok.svg";
+import coinImg2 from "../assets/hero/twitch.svg";
+import coinImg3 from "../assets/hero/yt.svg";
+import noteImg1 from "../assets/hero/roi.svg";
+import noteImg2 from "../assets/hero/insight.svg";
+import noteImg3 from "../assets/hero/cpa.svg";
+
+const noteImages = [noteImg1, noteImg2, noteImg3];
 
 
 type BackgroundTextProps = {
@@ -24,224 +29,28 @@ function BackgroundText({ x, dy, fontSize, fill, ref }: BackgroundTextProps) {
 
     return (
       <text x={x} y="100%" dy={dy} fontSize={fontSize} fill={fill} ref={ref}>
-        /WALL STREET/NASDAQ/NEW YORK STOCK EXCHANGE/GOLDMAN SACHS/JPMORGAN
-        CHASE/WALL STREET/NASDAQ/NEW YORK STOCK EXCHANGE/GOLDMAN SACHS/JPMORGAN
-        CHASE
+        /TIKTOK/YOUTUBE/INSTAGRAM/TWITCH/X(TWITTER)/BLUESKY/FACEBOOK/TIKTOK/YOUTUBE/INSTAGRAM/TWITCH/X(TWITTER)/BLUESKY/FACEBOOK
       </text>
     );
 }
 
 export default function Hero() {
-  const isPortraitRef = useRef(false);
-
   const lenis = useLenis();
   const isScrolledRef = useRef<boolean>(false);
   const heroRef = useRef<HTMLElement | null>(null);
 
   const itemsRef = useRef<(SVGTextElement | null)[]>([]);
-  const { contextSafe } = useGSAP();
   const maskRef = useRef<SVGSVGElement | null>(null);
   const firstSlide = useRef<HTMLDivElement | null>(null);
   const secondSlide = useRef<HTMLDivElement | null>(null);
+  const secondSlideContentRef = useRef<HTMLDivElement | null>(null);
   const firstHeadline = useRef<HTMLHeadingElement | null>(null);
-  const heroWrapperRef = useRef<HTMLDivElement | null>(null);
+  const heroBackgroundRef = useRef<HTMLDivElement | null>(null);
   const coinRef = useRef<(HTMLDivElement | null)[]>([]);
+  const notificationRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  function lockScroll() {
-    if (isScrolledRef.current) return;
-    if (!lenis) return;
-    document.body.style.overflow = "hidden";
-    isScrolledRef.current = true;
-    lenis.stop();
-  }
-
-  function unlockScroll() {
-    if (!isScrolledRef.current) return;
-    if (!lenis) return;
-    document.body.style.overflow = "";
-    isScrolledRef.current = false;
-    lenis.start();
-  }
-
-  function snapTo(target: number, onComplete?: () => void) {
-    if (!lenis) return;
-    lockScroll();
-    console.log("oh snap");
-    lenis.scrollTo(target, {
-      immediate: true,
-      force: true,
-    });
-  }
-
-  const checkRatio = useCallback(() => {
-    isPortraitRef.current = window.innerHeight > window.innerWidth;
-  }, []);
-
-  useEffect(() => {
-    checkRatio();
-
-    window.addEventListener("resize", checkRatio);
-
-    return () => window.removeEventListener("resize", checkRatio);
-  }, [checkRatio]);
-
-  useGSAP(
-    () => {
-      let heroTl = gsap.timeline({
-        scrollTrigger: {
-          invalidateOnRefresh: true,
-          trigger: heroRef.current,
-          start: "0% top",
-          end: "80% bottom",
-          toggleActions: "play play reverse reverse",
-          onEnter: () => {
-            checkRatio();
-            if (!heroRef.current) return;
-            const heroPos =
-              heroRef.current.offsetTop + heroRef.current.offsetHeight;
-            if ((heroPos > window.scrollY) && !isScrolledRef.current) {
-              const bottomScroll = heroPos - window.innerHeight;
-              snapTo(bottomScroll - 130);
-            }
-          },
-          onEnterBack: () => {
-            checkRatio();
-            if (!isScrolledRef.current) {
-              firstSlide.current?.classList.remove("hidden");
-              snapTo(0);
-            }
-          },
-          onLeaveBack: () => {
-            firstSlide.current?.classList.remove("hidden");
-          },
-        },
-        onComplete: () => {
-          unlockScroll();
-        },
-        onStart: () => {
-          checkRatio();
-        },
-        onReverseComplete: () => {
-          checkRatio();
-          unlockScroll();
-        },
-      });
-      heroTl
-        .to(maskRef.current, {
-          x: "-40%",
-          y: "20%",
-          duration: 0.5,
-          ease: `power1.inOut`,
-          onStart: () => {
-            checkRatio();
-            secondSlide.current?.classList.remove("hidden");
-          },
-          onReverseComplete: () => {
-            checkRatio();
-            secondSlide.current?.classList.add("hidden");
-          },
-        })
-        .to(
-          firstHeadline.current,
-          {
-            x: "-100%",
-            y: "20%",
-            duration: 0.5,
-            ease: `power1.inOut`,
-            onStart: () => {
-              secondSlide.current?.classList.remove("hidden");
-            },
-            onReverseComplete: () => {
-              secondSlide.current?.classList.add("hidden");
-            },
-          },
-          "<",
-        )
-        .to(
-          secondSlide.current,
-          {
-            opacity: 1,
-            duration: 0.5,
-            ease: `power1.inOut`,
-          },
-          "<",
-        )
-        .to(
-          heroWrapperRef.current,
-          {
-            backgroundSize: () =>
-              isPortraitRef.current ? "auto 120%" : "120% auto",
-            backgroundPosition: "100% 20%",
-            duration: 0.5,
-            ease: "power1.inOut",
-            onComplete: () => {
-              firstSlide.current?.classList.add("hidden");
-            },
-          },
-          "<",
-        );
-    },
-    {
-      dependencies: [lenis],
-    },
-  );
-
-  useEffect(() => {
-    const cleanups: (() => void)[] = [];
-
-    coinRef.current.forEach((zone) => {
-      if (!zone) return;
-
-      const coin = zone.querySelector<HTMLImageElement>("img");
-      if (!coin) return;
-
-      const onMouseMove = (e: MouseEvent) => {
-        const coinRect = coin.getBoundingClientRect();
-        const dotX = (coinRect.right + coinRect.left) / 2;
-        const dotY = (coinRect.bottom + coinRect.top) / 2;
-
-        const zoneRect = zone.getBoundingClientRect();
-        const radius = zoneRect.width / 2;
-        var posX = e.clientX;
-        var posY = e.clientY;
-        const distY = posY - dotY;
-        const distX = posX - dotX;
-        const dist = Math.sqrt(distY * distY + distX * distX);
-        const newDistX = -10 * (distX / dist) * (radius / dist);
-        const newDistY = -10 * (distY / dist) * (radius / dist);
-
-        gsap.to(coin, {
-          x: newDistX,
-          y: newDistY,
-          duration: 0.35,
-          ease: "power2.out",
-          overwrite: true,
-        });
-      };
-
-      const onMouseLeave = (e: MouseEvent) => {
-        gsap.to(coin, {
-          x: 0,
-          y: 0,
-          duration: 0.7,
-          ease: "elastic.out(1, 0.4)",
-          overwrite: true,
-        });
-      };
-
-      zone.addEventListener("mousemove", onMouseMove);
-      zone.addEventListener("mouseleave", onMouseLeave);
-
-      cleanups.push(() => {
-        zone.removeEventListener("mousemove", onMouseMove);
-        zone.removeEventListener("mouseleave", onMouseLeave);
-      });
-
-      return () => {
-        cleanups.forEach((cleanup) => cleanup);
-      };
-    });
-  }, []);
+  /* строчки start */
+  let runningTextTl = useRef<gsap.core.Timeline | null>(null);
 
   const bgTexts = [
     {
@@ -270,51 +79,284 @@ export default function Hero() {
     },
   ];
 
-  const horizontalLoop = contextSafe((el: SVGTextElement | null, i: number) => {
-    if (!el) return;
-    gsap.killTweensOf(el);
-    const textWidth = el.getComputedTextLength() ?? 0;
+  const killRunTxt = () => {
+    runningTextTl.current?.kill();
+  };
 
-    if (i % 2 === 0) {
-      gsap.to(el, {
-        x: `${-(textWidth / 2)}px`,
-        duration: 60 + i * 6,
-        repeat: -1,
-        ease: "none",
-      });
-    } else {
-      gsap.fromTo(
-        el,
-        { x: `${-(textWidth / 2)}px` },
-        {
-          x: `0px`,
+  const startRunTxt = () => {
+    if (runningTextTl.current) {
+      killRunTxt();
+    }
+
+    const tl = gsap.timeline();
+
+    itemsRef.current.forEach((el, i) => {
+      if (!el) return;
+      const textWidth = el.getComputedTextLength() ?? 0;
+
+      if (i % 2 === 0) {
+        tl.to(el, {
+          x: `${-(textWidth / 2)}px`,
           duration: 60 + i * 6,
           repeat: -1,
           ease: "none",
-        },
-      );
-    }
-  });
-
-  useEffect(() => {
-    itemsRef.current.forEach((el, i) => {
-      horizontalLoop(el, i);
+        }, "<");
+      } else {
+        tl.fromTo(
+          el,
+          { x: `${-(textWidth / 2)}px` },
+          {
+            x: `0px`,
+            duration: 60 + i * 6,
+            repeat: -1,
+            ease: "none",
+          },
+          "<"
+        );
+      }
     });
 
+    runningTextTl.current = tl;
+  };
 
-  return () => {
-    itemsRef.current.forEach((el) => {
-      if (el) gsap.killTweensOf(el);
-    })};
+  const stopRunTxt = () => {
+    runningTextTl.current?.pause();
+  };
+
+  const resumeRunTxt = () => {
+    runningTextTl.current?.resume();
+  };
+
+  useEffect(() => {
+    startRunTxt();
+    return () => {
+      killRunTxt();
+    };
   }, []);
+  /*строчки end*/
+
+  /* Анимация смены слайдов start*/
+
+  function lockScroll() {
+    if (isScrolledRef.current) return;
+    if (!lenis) return;
+    document.body.style.overflow = "hidden";
+    isScrolledRef.current = true;
+    lenis.stop();
+  }
+
+  function unlockScroll() {
+    if (!isScrolledRef.current) return;
+    if (!lenis) return;
+    document.body.style.overflow = "";
+    isScrolledRef.current = false;
+    lenis.start();
+  }
+
+  function snapTo(target: number) {
+    if (!lenis) return;
+    lockScroll();
+    lenis.scrollTo(target, {
+      immediate: true,
+      force: true,
+    });
+  }
+
+  useGSAP(
+    () => {
+      let heroTl = gsap.timeline({
+        scrollTrigger: {
+          invalidateOnRefresh: true,
+          trigger: heroRef.current,
+          start: "0% top",
+          end: "80% bottom",
+          toggleActions: "play play reverse reverse",
+          onEnter: () => {
+            if (!heroRef.current) return;
+            const heroPos =
+              heroRef.current.offsetTop + heroRef.current.offsetHeight;
+            if (heroPos > window.scrollY && !isScrolledRef.current) {
+              const bottomScroll = heroPos - window.innerHeight;
+              snapTo(bottomScroll - 130);
+            }
+          },
+          onEnterBack: () => {
+            if (!isScrolledRef.current) {
+              resumeRunTxt();
+              firstSlide.current?.classList.remove("hidden");
+
+              snapTo(0);
+            }
+          },
+          onLeaveBack: () => {
+            resumeRunTxt();
+            firstSlide.current?.classList.remove("hidden");
+          },
+        },
+        onComplete: () => {
+          unlockScroll();
+        },
+        onReverseComplete: () => {
+          unlockScroll();
+        },
+      });
+      heroTl
+        .to(maskRef.current, {
+          x: "-40%",
+          y: "20%",
+          duration: 0.5,
+          ease: `power1.inOut`,
+        })
+        .to(
+          firstHeadline.current,
+          {
+            x: "-100%",
+            y: "20%",
+            scale: 1.3,
+            duration: 0.5,
+            ease: `power1.inOut`,
+          },
+          "<",
+        )
+        .to(
+          secondSlide.current,
+          {
+            opacity: 1,
+            duration: 0.5,
+            ease: `power1.inOut`,
+          },
+          "<",
+        )
+        .fromTo(
+          secondSlideContentRef.current,
+          {
+            x: "40%",
+            y: "0%",
+            scale: 0.7,
+          },
+          {
+            x: "0%",
+            y: "0%",
+            scale: 1,
+            duration: 0.5,
+            ease: `power1.inOut`,
+          },
+          "<",
+        )
+        .to(
+          heroBackgroundRef.current,
+          {
+            backgroundPosition: "40% 0%",
+            scale: 1.3,
+            duration: 0.5,
+            ease: "power1.inOut",
+            onComplete: () => {
+              stopRunTxt();
+              firstSlide.current?.classList.add("hidden");
+            },
+          },
+          "<",
+        );
+    },
+    {
+      dependencies: [lenis],
+    },
+  );
+  /* Анимация смены слайдов end*/
+
+  /* start убегающие кругляши */
+  /* Подумал, т.к. анимашка простая и слушателей немного, что не буду их убирать при отсутствии во вьюпорте */
+
+  useGSAP(() => {
+    coinRef.current.forEach((zone) => {
+      if (!zone) return;
+
+      const coin = zone.querySelector<HTMLImageElement>("img");
+      if (!coin) return;
+
+      const onMouseMove = (e: MouseEvent) => {
+        const coinRect = coin.getBoundingClientRect();
+        const dotX = (coinRect.right + coinRect.left) / 2;
+        const dotY = (coinRect.bottom + coinRect.top) / 2;
+
+        const zoneRect = zone.getBoundingClientRect();
+        const radius = zoneRect.width / 2;
+        var posX = e.clientX;
+        var posY = e.clientY;
+        const distY = posY - dotY;
+        const distX = posX - dotX;
+        const dist = Math.sqrt(distY * distY + distX * distX);
+        const newDistX = -50 * (distX / dist) * (radius / dist);
+        const newDistY = -50 * (distY / dist) * (radius / dist);
+
+        gsap.to(coin, {
+          x: newDistX,
+          y: newDistY,
+          duration: 0.35,
+          ease: "power2.out",
+          overwrite: true,
+        });
+      };
+
+      const onMouseLeave = (e: MouseEvent) => {
+        gsap.to(coin, {
+          x: 0,
+          y: 0,
+          duration: 0.7,
+          ease: "elastic.out(1, 0.4)",
+          overwrite: true,
+        });
+      };
+
+      zone.addEventListener("mousemove", onMouseMove);
+      zone.addEventListener("mouseleave", onMouseLeave);
+    });
+  }, []);
+  /* end убегающие кругляши */
+
+  /* нотификации start */
+
+  useGSAP(() => {
+    const els = notificationRefs.current;
+    if (!els.length) return;
+
+    const randomRotate = () => gsap.utils.random(-10, 10);
+    const randomDelay = () => gsap.utils.random(1, 1.5);
+
+    gsap.set(els, {
+      opacity: 0,
+      scale: 0,
+    });
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    els.forEach((el) => {
+      tl.to(el, {
+        opacity: 1,
+        scale: 1,
+        rotate: randomRotate,
+        duration: 0.5,
+        ease: "back.out(1.7)",
+      })
+        .to({}, { duration: 0.2 })
+        .to(el, {
+          opacity: 0,
+          scale: 0,
+          duration: 0.4,
+          ease: "power2.in",
+        })
+        .to({}, { duration: randomDelay });
+    });
+
+    return () => tl.kill();
+  }, []);
+
+  /* нотификации end */
 
   return (
     <section className={`${styles.hero} text-(--white)`} ref={heroRef}>
-      <div className={styles["hero__content-wrap"]} ref={heroWrapperRef}>
-        <div
-          className="absolute w-full h-full overflow-hidden z-100"
-          ref={firstSlide}
-        >
+      <div className={styles["hero__content-wrap"]}>
+        <div className="absolute w-full h-full z-100" ref={firstSlide}>
           <svg className="w-[200%] h-[120%] absolute bottom-0" ref={maskRef}>
             <defs>
               <mask id="heroMask">
@@ -344,13 +386,12 @@ export default function Hero() {
             <div className="container mx-auto">
               <h1 ref={firstHeadline}>
                 <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium">
-                  Trading was for
+                  Creator ads feel
                 </span>
 
                 <span className="block uppercase font-[Bitcount] text-(--orange) text-[76px] sm:text-[110px] md:text-[140px] lg:text-[184px]">
                   <span className="inline-flex gap-4 sm:gap-8 lg:gap-15">
-                    <span>the</span>
-                    <span>few</span>
+                    <span>random</span>
                   </span>
                 </span>
               </h1>
@@ -360,21 +401,24 @@ export default function Hero() {
         <div
           ref={secondSlide}
           style={{ opacity: 0 }}
-          className="hidden relative h-full overflow-hidden"
+          className="relative h-full z-10"
         >
-          <div className="container mx-auto flex items-center relative z-10 h-full px-6">
+          <div
+            className="container mx-auto flex items-center relative z-10 h-full px-6"
+            ref={secondSlideContentRef}
+          >
             <div className="pt-15 lg:pt-0">
               <h1>
                 <span className="block font-medium text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
-                  And now its for
+                  But not with
                 </span>
 
                 <span className="block uppercase font-[Bitcount] text-[128px] sm:text-[170px] md:text-[220px] lg:text-[296px] text-(--green) font-medium leading-none lg:leading-62.5">
-                  you
+                  us
                 </span>
               </h1>
               <Button className="text-(--black) bg-(--green)" isForForm>
-                Join Now
+                Start now
               </Button>
             </div>
             <div className="absolute bottom-0 right-0 w-full h-full min-[426px]:w-[70%] min-[426px]:h-auto">
@@ -383,10 +427,10 @@ export default function Hero() {
                   if (el) coinRef.current[1] = el;
                 }}
                 className="
-                  flex h-40 w-40 min-[426px]:h-70 min-[426px]:w-70
+                  flex h-40 w-40 min-[426px]:h-[40%] min-[426px]:w-[40%]
                   items-center justify-center rounded-full absolute z-100
-                  top-[18%] left-[-10%]
-                  min-[426px]:top-[30%] min-[426px]:left-[16%]
+                  top-[30%] left-[10%]
+
                 "
               >
                 <img
@@ -398,13 +442,31 @@ export default function Hero() {
 
               <div
                 ref={(el) => {
+                  if (el) coinRef.current[3] = el;
+                }}
+                className="
+                  flex h-32 w-32 min-[426px]:h-[35%] min-[426px]:w-[35%]
+                  items-center justify-center rounded-full absolute z-1001
+                  top-[-10%] right-[15%]
+
+                "
+              >
+                <img
+                  src={coinImg3.src}
+                  alt=""
+                  className="w-[50%] h-[50%] relative"
+                />
+              </div>
+
+              <div
+                ref={(el) => {
                   if (el) coinRef.current[2] = el;
                 }}
                 className="
-                  flex h-36 w-36 min-[426px]:h-65 min-[426px]:w-65
+                  flex h-36 w-36 min-[426px]:h-[35%] min-[426px]:w-[35%]
                   items-center justify-center rounded-full absolute z-1001
-                  bottom-[20%] right-[5%]
-                  min-[426px]:bottom-[30%] min-[426px]:right-[5%]
+                  bottom-[25%] right-[0%]
+
                 "
               >
                 <img
@@ -414,22 +476,22 @@ export default function Hero() {
                 />
               </div>
 
-              <div
-                ref={(el) => {
-                  if (el) coinRef.current[3] = el;
-                }}
-                className="
-                  flex h-32 w-32 min-[426px]:h-60 min-[426px]:w-60
+                            <div
+                className="flex h-36 w-36 min-[426px]:h-[35%] min-[426px]:w-[35%]
                   items-center justify-center rounded-full absolute z-1001
-                  top-[10%] right-[20%]
-                  min-[426px]:top-[-8%] min-[426px]:right-[20%]
-                "
+                  bottom-[55%] left-[23%]"
               >
-                <img
-                  src={coinImg3.src}
-                  alt=""
-                  className="w-[50%] h-[50%] relative"
-                />
+                {noteImages.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img.src}
+                    alt=""
+                    className="w-[50%] h-[50%] absolute origin-[center_bottom]"
+                    ref={(el) => {
+                      if (el) notificationRefs.current[index] = el;
+                    }}
+                  />
+                ))}
               </div>
 
               <img
@@ -441,6 +503,10 @@ export default function Hero() {
           </div>
           <div className={styles["second-slide-overlay"]}></div>
         </div>
+        <div
+          className={styles["hero-background"]}
+          ref={heroBackgroundRef}
+        ></div>
       </div>
     </section>
   );

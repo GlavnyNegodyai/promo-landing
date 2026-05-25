@@ -14,7 +14,6 @@ export default function Loading(){
     loop();
 
     function onLoad() {
-        console.log("+");
         setIsLoaded(true);
         clearTimeout(timeout);
         document.body.style.overflow = "";

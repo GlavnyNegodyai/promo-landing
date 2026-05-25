@@ -8,10 +8,21 @@
   height: 100vh;
   position: sticky;
   top: 0;
+  overflow: hidden;
+
+}
+
+.hero-background{
+  height: 100vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  position: absolute;
   background-image: url(../assets/hero/hero-background.webp);
   background-repeat: no-repeat;
   background-position: 0% 0%; 
-  background-size: 100% auto;
+  background-size: cover;
 }
 
 .second-slide-overlay{
@@ -23,11 +34,4 @@
   top: 0;
   left: 0;
   opacity: 0.9;
-}
-
-
-@media (orientation: portrait) {
-  .hero__content-wrap {
-    background-size: auto 100%;
-  }
 }

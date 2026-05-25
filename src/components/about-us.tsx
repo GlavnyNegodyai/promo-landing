@@ -5,20 +5,20 @@ import img3 from "../assets/about-us/zap.svg";
 
 const statsList = [
   {
-    value: "142k+",
-    text: "Active users operating on autopilot.",
+    value: "1,000+",
+    text: "Creators matched with brands for focused campaign launches.",
     bg: "bg-(--orange)",
     image: img2.src,
   },
   {
-    value: "$1.2B+",
-    text: "Net profit captured across our community.",
+    value: "250+",
+    text: "Brand campaigns planned, launched, and optimized with clear goals.",
     bg: "bg-(--green)",
     image: img1.src,
   },
   {
-    value: "0.02s",
-    text: "Latency from insight to execution. Markets move. We’re already there.",
+    value: "48h",
+    text: "Average time to shortlist relevant creators. Less searching. More action.",
     bg: "bg-(--black) text-(--white)",
     image: img3.src,
   },
@@ -85,16 +85,16 @@ export default function AboutUs() {
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-6">
         <div className="order-first">
           <SubHeadline>about us</SubHeadline>
-          <h2 className="text-3xl min-[426px]:text-5xl pb-6">
-            The market is noise. Our AI is signal.
-          </h2>
-          <p>
-            We stripped trading of its friction. What remains is
-            state-of-the-art AI—autonomous, adaptive, and ruthlessly precise. It
-            reads global markets, executes without hesitation, and compounds
-            profit while you step away. Near-zero error. Maximum clarity. The
-            future doesn’t wait. It trades.
-          </p>
+        <h2 className="text-3xl min-[426px]:text-5xl pb-6">
+          The right brands. The right creators. The right impact.
+        </h2>
+        <p>
+          We connect companies with creators who actually fit their audience, goals,
+          and market. No random outreach. Only smart influencer
+          partnerships, clear campaign strategy, and advertising built to perform. From
+          creator selection to campaign direction, we help brands turn attention into
+          measurable business results.
+        </p>
         </div>
 
         {statsList.map((item, i) => (
