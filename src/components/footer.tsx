@@ -1,6 +1,21 @@
 import styles from "./footer.module.css";
+import gsap from "gsap";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 export default function Footer() {
+  const footerTextRef = useRef<SVGTextElement | null>(null);
+  const orangeRectRef = useRef<SVGRectElement | null>(null);
+  useEffect(() => {
+    const tl = gsap.timeline({scrollTrigger: {
+          invalidateOnRefresh: true,
+          trigger: "#contact-us",
+          start: "100% 80%",
+          end: "120% 100%",
+          toggleActions: "play play reverse reverse",
+          }});
+    tl.fromTo([footerTextRef.current, orangeRectRef.current], {x: -700, opacity: 0}, {x: 0, duration: 3, opacity: 1, ease:"power4.out"});
+  });
   return (
     <footer className={styles.footer}>
       <svg className="w-full h-full absolute">
@@ -11,19 +26,20 @@ export default function Footer() {
               <text
                 x="2rem"
                 y="80px"
-                fontSize="144px"
+                fontSize="120px"
                 fill="rgba(0, 0, 0, 1)"
+                ref={footerTextRef}
               >
                 &lt;M.Labs&gt;.from_campaign_brief("ad-v2.4", cache_dir="/mnt/audience-data", strict_fit=True)
               </text>
             </g>
           </mask>
         </defs>
-        <rect x="2rem" width="700px" height="100%" fill="#EC6519" />
+        <rect x="2rem" width="640px" height="100%" fill="#EC6519" ref={orangeRectRef}/>
         <rect
           width="100%"
           height="100%"
-          fill="#1d1d1d"
+          fill="rgb(7, 7, 7)"
           mask="url(#footer-mask)"
         />
       </svg>

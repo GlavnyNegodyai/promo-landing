@@ -5,6 +5,8 @@ import gsap from "gsap";
 import styles from "./press.module.css";
 import { useEffect } from "react";
 
+import AnimationWrapper from "./animation-wrapper";
+
 function PressOption({
   children,
   onButtonInteraction,
@@ -49,7 +51,7 @@ export const Testimonial = ({
 }: TestimonialProps) => {
   return (
     <li ref={refSetter} className="hidden">
-      <p className="h-50 min-[426px]:text-3xl text-2xl font-light mb-6 min-[426px]:mb-12 text-justify indent-10">
+      <p className="h-65 min-[426px]:text-3xl text-2xl font-light mb-6 min-[426px]:mb-12 text-justify indent-10">
         <span className={styles["masked-text--left"]}>{textLeft}</span>
         <span className={styles["main-text"]}>{textMain}</span>
         <span className={styles["masked-text--right"]}>{textRight}</span>
@@ -318,10 +320,11 @@ export default function Press() {
       <div
         className="
           container mx-auto
-          grid gap-8 lg:gap-18
-          grid-cols-1 lg:grid-cols-[5fr_3fr] px-6
+          flex flex-col-reverse gap-8 lg:gap-18
+          grid-cols-1 lg:grid lg:grid-cols-[5fr_3fr] px-6
         "
       >
+        <AnimationWrapper>
         <div className="order-2 lg:order-1 flex flex-col justify-between min-h-100 min-[426px]:mt-6">
           <ul>
             {testimonials.map((t, i) => (
@@ -353,12 +356,14 @@ export default function Press() {
             ))}
           </ul>
         </div>
-
+        </AnimationWrapper>
         <div className="order-1 lg:order-2">
           <SubHeadline>the press</SubHeadline>
+          <AnimationWrapper isHeadline isCodedHeadline>
           <h2 className="text-3xl min-[426px]:text-5xl">
-            Trusted by press worldwide
+            Trusted by press worldwide.
           </h2>
+          </AnimationWrapper>
         </div>
       </div>
     </section>

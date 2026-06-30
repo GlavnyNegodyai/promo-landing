@@ -2,6 +2,7 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import LenisProvider from '../components/lenis-provider';
+import Loading from '../components/loading';
 ---
 
 <!doctype html>
@@ -17,10 +18,11 @@ import LenisProvider from '../components/lenis-provider';
 	</head>
 	
 	<body data-theme="orange-noise">
-		<LenisProvider client:load >
-		<Header/>
+		<LenisProvider client:load>
+		<Loading client:visible/>
+		<Header client:load/>
 		<slot />
-		<Footer/>
+		<Footer client:load/>
 		</LenisProvider>
 	</body>
 </html>

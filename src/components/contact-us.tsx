@@ -1,5 +1,6 @@
 import SubHeadline from "./subheadline";
 import Form from "./form";
+import AnimationWrapper from "./animation-wrapper";
 
 export default function ContactUs() {
   return (
@@ -9,25 +10,28 @@ export default function ContactUs() {
     >
       <div className="max-w-117.5">
         <SubHeadline>contact us</SubHeadline>
+        <AnimationWrapper isHeadline>
+          <h2 className="text-3xl min-[426px]:text-5xl pb-6">
+            Your campaigns start with one move.
+          </h2>
+        </AnimationWrapper>
+        <AnimationWrapper>
+          <p>
+            Leave your details and we’ll get back to you shortly to discuss your
+            brand, campaign goals, and the type of creators you want to work
+            with. From the first contact, we help shape a clear route toward a
+            campaign built around relevance, strategy, and measurable results.
+          </p>
 
-        <h2 className="text-3xl min-[426px]:text-5xl pb-6">
-          Your campaigns start with one move.
-        </h2>
-
-        <p>
-          Leave your details and we’ll get back to you shortly to discuss your
-          brand, campaign goals, and the type of creators you want to work with.
-          From the first contact, we help shape a clear route toward a campaign
-          built around relevance, strategy, and measurable results.
-        </p>
-
-        <p className="pt-4">
-          Tell us what you want to launch. We’ll help you find the right
-          creators for it.
-        </p>
+          <p className="pt-4">
+            Tell us what you want to launch. We’ll help you find the right
+            creators for it.
+          </p>
+        </AnimationWrapper>
       </div>
-
-      <Form />
+      <AnimationWrapper>
+        <Form />
+      </AnimationWrapper>
     </section>
   );
 }

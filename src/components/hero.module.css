@@ -9,10 +9,9 @@
   position: sticky;
   top: 0;
   overflow: hidden;
-
 }
 
-.hero-background{
+.hero-background {
   height: 100vh;
   width: 100vw;
   left: 0;
@@ -21,16 +20,18 @@
   position: absolute;
   background-image: url(../assets/hero/hero-background.webp);
   background-repeat: no-repeat;
-  background-position: 0% 0%; 
+  background-position: 0% 0%;
   background-size: cover;
 }
 
-.second-slide-overlay{
+.second-slide-overlay {
   position: absolute;
   z-index: 1;
   height: 100%;
   width: 100%;
-  background: linear-gradient(rgba(236, 101, 25, 0.9), rgba(236, 101, 25, 0.9)), url("../assets/backgrounds/grid-noise.webp");
+  background:
+    linear-gradient(rgba(236, 101, 25, 0.9), rgba(236, 101, 25, 0.9)),
+    url("../assets/backgrounds/grid-noise.webp");
   top: 0;
   left: 0;
   opacity: 0.9;

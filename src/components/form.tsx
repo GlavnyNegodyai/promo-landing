@@ -31,7 +31,7 @@ export default function Form({extraClass}: {extraClass?: string}) {
         </Input>
       </div>
       <div>
-        <Input type="number" id="phone-number" required>
+        <Input type="tel" id="phone-number" required>
           Phone number
         </Input>
       </div>

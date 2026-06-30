@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
+import AnimationWrapper from "./animation-wrapper";
+
 const questionList = [
   {
     question: "How do you choose the right creators?",
@@ -48,18 +50,16 @@ function ListElement({
   return (
     <li className={`${styles["list-element"]} text-(--white)`} ref={refSetter}>
       <div className="flex items-center justify-between">
-        <div>
+        <div className="">
           <span className="font-[Bitcount] text-3xl font-light">
             {listNumber}/
           </span>
           <h3 className="text-2xl inline pl-2">{question}</h3>
         </div>
         <button
-          className={`${styles.button} leading-12 font-[Bitcount] text-7xl text-(--green) font-extralight`}
+          className={`${styles.button} leading-12 font-[Bitcount] text-7xl text-(--green) font-extralight shrink-0`}
           onClick={onButtonClick}
-        >
-          +
-        </button>
+        >+</button>
       </div>
       <p className={`${styles.answer} pl-6`}>{answer}</p>
     </li>
@@ -159,31 +159,34 @@ export default function QA() {
 
   return (
     <section className="black-background py-10 min-[426px]:py-18 px-6" id="qa">
-      <div className="container mx-auto flex flex-col lg:flex-row gap-8 lg:gap-18">
-        <ul className="w-full order-2 lg:order-1">
-          {questionList.map((questionElement, i) => {
-            return (
-              <ListElement
-                question={questionElement.question}
-                answer={questionElement.answer}
-                listNumber={i + 1}
-                key={i}
-                refSetter={(el) => {
-                  itemsRef.current[i] = el;
-                }}
-                onButtonClick={() => {
-                  handleAccordeon(opened, i, itemsRef.current[i]);
-                }}
-              />
-            );
-          })}
-        </ul>
-
+      <div className="container mx-auto flex flex-col-reverse lg:flex-row gap-8 lg:gap-18">
+        <AnimationWrapper>
+          <ul className="w-full order-2 lg:order-1">
+            {questionList.map((questionElement, i) => {
+              return (
+                <ListElement
+                  question={questionElement.question}
+                  answer={questionElement.answer}
+                  listNumber={i + 1}
+                  key={i}
+                  refSetter={(el) => {
+                    itemsRef.current[i] = el;
+                  }}
+                  onButtonClick={() => {
+                    handleAccordeon(opened, i, itemsRef.current[i]);
+                  }}
+                />
+              );
+            })}
+          </ul>
+        </AnimationWrapper>
         <div className="order-1 lg:order-2">
           <SubHeadline>FAQ</SubHeadline>
-          <h2 className="text-3xl min-[426px]:text-5xl text-(--white)">
-            Frequently Asked Questions
-          </h2>
+          <AnimationWrapper isHeadline isCodedHeadline>
+            <h2 className="text-3xl min-[426px]:text-5xl text-(--white)">
+              Frequently Asked Questions.
+            </h2>
+          </AnimationWrapper>
         </div>
       </div>
     </section>

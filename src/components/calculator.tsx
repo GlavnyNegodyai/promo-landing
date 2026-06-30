@@ -6,12 +6,14 @@ import { useGSAP } from "@gsap/react";
 
 import styles from "./calculator.module.css";
 
+import AnimationWrapper from "./animation-wrapper";
+
 function DepositInput({
   setBudget,
-  defaultBudget,
+  defaultMRR,
 }: {
   setBudget: (value: number) => void;
-  defaultBudget: number;
+  defaultMRR: number;
 }) {
   return (
     <div className="text-3xl flex rounded-lg border-2 border-(--white)">
@@ -19,12 +21,12 @@ function DepositInput({
       <input
         type="number"
         className={`${styles["number-input"]} w-full sm:w-30`}
-        defaultValue={`${defaultBudget}`}
+        defaultValue={`${defaultMRR}`}
         onChange={(e) => setBudget(Number(e.currentTarget.value))}
         onBlur={(e) => {
-          if (Number(e.currentTarget.value) < defaultBudget) {
-            e.currentTarget.value = `${defaultBudget}`;
-            setBudget(defaultBudget);
+          if (Number(e.currentTarget.value) < defaultMRR) {
+            e.currentTarget.value = `${defaultMRR}`;
+            setBudget(defaultMRR);
           }
         }}
       />
@@ -120,10 +122,20 @@ function RangeSlider({ setDuration }: Props) {
   );
 }
 
+const growthOptions = [
+  { name: "Maintain", multiplyer: 0.3 },
+  { name: "Grow", multiplyer: 0.5 },
+  { name: "Aggressive", multiplyer: 1 },
+];
+
 export default function Calculator() {
-  const [magicNumber, setMagicNumber] = useState({ min: 1000, max: 1500 });
-  const defaultBudget = 250;
-  const [budget, setBudget] = useState(defaultBudget);
+  const [magicNumber, setMagicNumber] = useState({ min: 42, max: 21 });
+  const defaultMRR = 500;
+  const [budget, setBudget] = useState(defaultMRR);
+  const [growthGoalMultiplyer, setGrowthGoalMultiplyer] = useState(
+    growthOptions[0].multiplyer,
+  );
+
   const [duration, setDuration] = useState(6);
   const [isLoading, setLoading] = useState(true);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
@@ -138,19 +150,22 @@ export default function Calculator() {
       gsap.to(titleRef.current, {
         backgroundColor: "var(--green)",
         borderRadius: "0.75rem",
+        opacity: 0.9,
         color: "transparent",
         duration: 0.3,
       });
 
       gsap.to(buttonRef.current, {
-        backgroundColor: "var(--grey)",
+        backgroundColor: "var(--orange)",
         scale: 0.96,
-        opacity: 0.7,
-        duration: 0.3,
+        opacity: 0.5,
+        ease: "power4.out",
+        duration: 0.01,
       });
     } else {
       gsap.to(titleRef.current, {
         backgroundColor: "transparent",
+        opacity: 1,
         color: "var(--green)",
         duration: 0.3,
       });
@@ -159,7 +174,8 @@ export default function Calculator() {
         backgroundColor: "var(--green)",
         scale: 1,
         opacity: 1,
-        duration: 0.3,
+        ease: "power4.out",
+        duration: 0.01,
       });
     }
   });
@@ -176,11 +192,10 @@ export default function Calculator() {
     setLoading(true);
     setTimeout(() => {
       const calculatedProfit =
-        Math.round((budget * Math.PI) / 2) *
-        duration;
+        Math.round(((budget * Math.PI) / 3) * growthGoalMultiplyer) * duration;
       const newProfitObj = {
-        min: calculatedProfit - 42 * 2,
-        max: calculatedProfit + 42 * 2,
+        min: Math.round(calculatedProfit * 0.8),
+        max: Math.round(calculatedProfit * 1.2),
       };
       setMagicNumber(newProfitObj);
       setLoading(false);
@@ -195,65 +210,86 @@ export default function Calculator() {
       <div
         className={`
       container mx-auto
-      flex flex-col lg:flex-row
       gap-10 lg:gap-20
       ${styles["calculator-wrapper"]}
     `}
       >
         <div>
           <SubHeadline>calculator</SubHeadline>
-          <h2 className="text-3xl min-[426px]:text-5xl pb-6">
-            Estimate reach. Forecast results.
-          </h2>
-          <p className="text-(--white)">
-            Set your campaign budget, choose the campaign duration, and select
-            the number of platforms you want to use. The calculator uses
-            previous campaign performance to estimate potential clicks, leads,
-            or conversions before launch. It is not a promise. It is a practical
-            forecast to help you plan smarter, compare scenarios, and understand
-            what the right creator strategy can deliver.
-          </p>
+          <AnimationWrapper isHeadline>
+            <h2 className="text-3xl min-[426px]:text-5xl pb-6">
+              Estimate reach. Forecast results.
+            </h2>
+          </AnimationWrapper>
+          <AnimationWrapper>
+            <p className="text-(--white)">
+              Enter your target monthly revenue, select your campaign timeline,
+              and choose your growth goal. Based on these inputs, the calculator
+              estimates the advertising budget typically required to support
+              your objectives. It is not a guarantee of results, but a practical
+              planning tool designed to help you set realistic expectations,
+              compare growth scenarios, and understand how much investment may
+              be needed to reach your goals.
+            </p>
+          </AnimationWrapper>
         </div>
-
-        <div className="bg-(--black) p-4 sm:p-6 sm:pt-8 rounded-3xl text-(--white) min-w-0">
-          <h3
-            ref={titleRef}
-            className={`w-fit font-[Bitcount_Double] text-(--green) text-4xl sm:text-5xl font-light mb-6 break-all ${styles.magicNumber}`}
-          >
-            ~{magicNumber.min}-{magicNumber.max}
-          </h3>
-
-          <div>
-            <div className="mb-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-12">
-              <p className="text-2xl sm:text-3xl font-light mb-0 sm:mb-2">
-                Budget
-              </p>
-              <DepositInput
-                setBudget={setBudget}
-                defaultBudget={defaultBudget}
-              />
-            </div>
-
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-12 mb-6">
-              <label
-                htmlFor="duration-range"
-                className="text-2xl sm:text-3xl font-light"
-              >
-                Timeline
-              </label>
-              <RangeSlider setDuration={setDuration} />
-            </div>
-
-            <Button
-              ref={buttonRef}
-              className="bg-(--green) text-(--white) px-6 w-full sm:w-auto"
-              onClick={computeProfit}
-              disabled={isLoading}
+        <AnimationWrapper>
+          <div className="bg-(--black) p-4 sm:p-6 sm:pt-8 rounded-3xl text-(--white) min-w-0">
+            <div
+              ref={titleRef}
+              className={`w-full font-[Bitcount_Double] text-(--green) text-5xl sm:text-6xl font-light mb-6 flex`}
             >
-              Calculate
-            </Button>
+              <div>~</div>
+              <div>
+                {magicNumber.min}-&#8203;{magicNumber.max}$
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-12">
+                <p className={styles.sectionTitle}>Target MRR</p>
+                <DepositInput setBudget={setBudget} defaultMRR={defaultMRR} />
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-12 mb-6">
+                <p className={styles.sectionTitle}>Timeline</p>
+                <RangeSlider setDuration={setDuration} />
+              </div>
+
+              <div className={styles.growthSection}>
+                <p className={styles.sectionTitle}>Growth Goal</p>
+
+                <div className={styles.radioGroup}>
+                  {growthOptions.map((option, i) => (
+                    <label className={styles.radioLabel} key={i}>
+                      <input
+                        type="radio"
+                        name="growthGoal"
+                        value={option.multiplyer}
+                        className={styles.radioButton}
+                        onChange={(e) =>
+                          setGrowthGoalMultiplyer(Number(e.target.value))
+                        }
+                        defaultChecked={
+                          growthOptions.indexOf(option) == 0 && true
+                        }
+                      />
+                      {option.name}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <Button
+                ref={buttonRef}
+                className="bg-(--green) text-(--white) px-6 w-full sm:w-auto"
+                onClick={computeProfit}
+                disabled={isLoading}
+              >
+                Calculate
+              </Button>
+            </div>
           </div>
-        </div>
+        </AnimationWrapper>
       </div>
     </section>
   );

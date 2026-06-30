@@ -17,3 +17,9 @@
     color: var(--orange);
     border-color: var(--orange);
 }
+
+@media(max-width: 425px){
+  .button {
+  padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2);
+}
+}

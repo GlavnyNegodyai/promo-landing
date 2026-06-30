@@ -22,7 +22,7 @@
 }
 
 :root {
-  --black: rgba(29, 29, 29, 1);
+  --black: rgb(7, 7, 7);
   --grey: rgba(173, 173, 173, 1);
   --orange: rgba(236, 101, 25, 1);
   --green: rgba(153, 217, 0, 1);
@@ -38,6 +38,29 @@ html {
 
 }
 
+* {
+  scrollbar-color: var(--grey) var(--black);
+}
+
+::selection {
+  background: var(--green);
+  color: white;
+}
+
+
+*::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--black);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--black);
+}
+
 main{
   position: relative;
   z-index: 1;
@@ -49,6 +72,13 @@ main{
     url(../assets/backgrounds/gauss-noise.webp);
 }
 
+.white-background--fixed {
+  background:
+    linear-gradient(rgba(236, 236, 236, 0.95), rgba(236, 236, 236, 0.95)),
+    url(../assets/backgrounds/gauss-noise.webp);
+    background-attachment: fixed;
+}
+
 .orange-background {
   background:
     linear-gradient(rgba(236, 101, 25, 0.95), rgba(236, 101, 25, 0.95)),
@@ -57,7 +87,7 @@ main{
 
 .black-background {
   background:
-    linear-gradient(rgba(29, 29, 29, 0.95), rgba(29, 29, 29, 0.95)),
+    linear-gradient(rgba(7, 7, 7, 0.95), rgba(29, 29, 29, 0.95)),
     url(../assets/backgrounds/grid-noise.webp);
 }
 

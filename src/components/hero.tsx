@@ -13,8 +13,9 @@ import noteImg1 from "../assets/hero/roi.svg";
 import noteImg2 from "../assets/hero/insight.svg";
 import noteImg3 from "../assets/hero/cpa.svg";
 
-const noteImages = [noteImg1, noteImg2, noteImg3];
+import AnimationWrapper from "./animation-wrapper";
 
+const noteImages = [noteImg1, noteImg2, noteImg3];
 
 type BackgroundTextProps = {
   x: string;
@@ -25,13 +26,11 @@ type BackgroundTextProps = {
 };
 
 function BackgroundText({ x, dy, fontSize, fill, ref }: BackgroundTextProps) {
-  
-
-    return (
-      <text x={x} y="100%" dy={dy} fontSize={fontSize} fill={fill} ref={ref}>
-        /TIKTOK/YOUTUBE/INSTAGRAM/TWITCH/X(TWITTER)/BLUESKY/FACEBOOK/TIKTOK/YOUTUBE/INSTAGRAM/TWITCH/X(TWITTER)/BLUESKY/FACEBOOK
-      </text>
-    );
+  return (
+    <text x={x} y="100%" dy={dy} fontSize={fontSize} fill={fill} ref={ref}>
+      /TIKTOK/YOUTUBE/INSTAGRAM/TWITCH/X(TWITTER)/BLUESKY/FACEBOOK/TIKTOK/YOUTUBE/INSTAGRAM/TWITCH/X(TWITTER)/BLUESKY/FACEBOOK
+    </text>
+  );
 }
 
 export default function Hero() {
@@ -61,19 +60,19 @@ export default function Hero() {
     },
     {
       x: "0",
-      dy: "-105",
+      dy: "-115",
       fontSize: 144,
       fill: "rgba(0, 0, 0, .5)",
     },
     {
       x: "0",
-      dy: "-210",
+      dy: "-230",
       fontSize: 128,
       fill: "rgba(0, 0, 0, .25)",
     },
     {
       x: "0",
-      dy: "-315",
+      dy: "-330",
       fontSize: 128,
       fill: "rgba(0, 0, 0, .125)",
     },
@@ -94,24 +93,30 @@ export default function Hero() {
       if (!el) return;
       const textWidth = el.getComputedTextLength() ?? 0;
 
+      tl.set(el, { webkitFilter: `blur(${i * 0.5}px)` }, "<");
+
       if (i % 2 === 0) {
-        tl.to(el, {
-          x: `${-(textWidth / 2)}px`,
-          duration: 60 + i * 6,
-          repeat: -1,
-          ease: "none",
-        }, "<");
+        tl.to(
+          el,
+          {
+            x: `${-(textWidth / 2)}px`,
+            duration: 40 - i * 5,
+            repeat: -1,
+            ease: "none",
+          },
+          "<",
+        );
       } else {
         tl.fromTo(
           el,
           { x: `${-(textWidth / 2)}px` },
           {
             x: `0px`,
-            duration: 60 + i * 6,
+            duration: 40 - i * 5,
             repeat: -1,
             ease: "none",
           },
-          "<"
+          "<",
         );
       }
     });
@@ -231,7 +236,7 @@ export default function Hero() {
           secondSlideContentRef.current,
           {
             x: "40%",
-            y: "0%",
+            y: "20%",
             scale: 0.7,
           },
           {
@@ -246,8 +251,8 @@ export default function Hero() {
         .to(
           heroBackgroundRef.current,
           {
-            backgroundPosition: "40% 0%",
-            scale: 1.3,
+            backgroundPosition: "40% 20%",
+            scale: 1.5,
             duration: 0.5,
             ease: "power1.inOut",
             onComplete: () => {
@@ -286,8 +291,8 @@ export default function Hero() {
         const distY = posY - dotY;
         const distX = posX - dotX;
         const dist = Math.sqrt(distY * distY + distX * distX);
-        const newDistX = -50 * (distX / dist) * (radius / dist);
-        const newDistY = -50 * (distY / dist) * (radius / dist);
+        const newDistX = -20 * (distX / dist) * (radius / dist);
+        const newDistY = -20 * (distY / dist) * (radius / dist);
 
         gsap.to(coin, {
           x: newDistX,
@@ -303,7 +308,7 @@ export default function Hero() {
           x: 0,
           y: 0,
           duration: 0.7,
-          ease: "elastic.out(1, 0.4)",
+          ease: "elastic.out(1.2, 0.4)",
           overwrite: true,
         });
       };
@@ -374,11 +379,23 @@ export default function Hero() {
                   ))}
                 </g>
               </mask>
+              <mask id="cutoutMask">
+                <rect width="100%" height="100%" fill="#fff" />
+                <g>
+                  <rect width="100%" height="86%" x="25%" y="-5%" rx="36" />
+                </g>
+              </mask>
             </defs>
             <rect
               width="100%"
               height="100%"
-              fill="#1d1d1d"
+              fill="rgba(82, 82, 82, 0.6)"
+              mask="url(#cutoutMask)"
+            />
+            <rect
+              width="100%"
+              height="100%"
+              fill="rgb(7, 7, 7);"
               mask="url(#heroMask)"
             />
           </svg>
@@ -388,12 +405,11 @@ export default function Hero() {
                 <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium">
                   Creator ads feel
                 </span>
-
-                <span className="block uppercase font-[Bitcount] text-(--orange) text-[76px] sm:text-[110px] md:text-[140px] lg:text-[184px]">
-                  <span className="inline-flex gap-4 sm:gap-8 lg:gap-15">
-                    <span>random</span>
+                <AnimationWrapper isHeadline isCodedHeadline>
+                  <span className="block uppercase font-[Bitcount] text-(--orange) text-[76px] sm:text-[110px] md:text-[140px] lg:text-[184px]">
+                    random
                   </span>
-                </span>
+                </AnimationWrapper>
               </h1>
             </div>
           </div>
@@ -412,7 +428,6 @@ export default function Hero() {
                 <span className="block font-medium text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
                   But not with
                 </span>
-
                 <span className="block uppercase font-[Bitcount] text-[128px] sm:text-[170px] md:text-[220px] lg:text-[296px] text-(--green) font-medium leading-none lg:leading-62.5">
                   us
                 </span>
@@ -421,17 +436,16 @@ export default function Hero() {
                 Start now
               </Button>
             </div>
-            <div className="absolute bottom-0 right-0 w-full h-full min-[426px]:w-[70%] min-[426px]:h-auto">
+            <div className="absolute bottom-0 right-0 w-[70%] h-auto">
               <div
                 ref={(el) => {
                   if (el) coinRef.current[1] = el;
                 }}
                 className="
-                  flex h-40 w-40 min-[426px]:h-[40%] min-[426px]:w-[40%]
-                  items-center justify-center rounded-full absolute z-100
-                  top-[30%] left-[10%]
-
-                "
+      flex h-[40%] w-[40%]
+      items-center justify-center rounded-full absolute z-100
+      top-[30%] left-[10%]
+    "
               >
                 <img
                   src={coinImg1.src}
@@ -445,11 +459,10 @@ export default function Hero() {
                   if (el) coinRef.current[3] = el;
                 }}
                 className="
-                  flex h-32 w-32 min-[426px]:h-[35%] min-[426px]:w-[35%]
-                  items-center justify-center rounded-full absolute z-1001
-                  top-[-10%] right-[15%]
-
-                "
+      flex h-[35%] w-[35%]
+      items-center justify-center rounded-full absolute z-1001
+      top-[-10%] right-[15%]
+    "
               >
                 <img
                   src={coinImg3.src}
@@ -463,11 +476,10 @@ export default function Hero() {
                   if (el) coinRef.current[2] = el;
                 }}
                 className="
-                  flex h-36 w-36 min-[426px]:h-[35%] min-[426px]:w-[35%]
-                  items-center justify-center rounded-full absolute z-1001
-                  bottom-[25%] right-[0%]
-
-                "
+      flex h-[35%] w-[35%]
+      items-center justify-center rounded-full absolute z-1001
+      bottom-[25%] right-[0%]
+    "
               >
                 <img
                   src={coinImg2.src}
@@ -476,10 +488,12 @@ export default function Hero() {
                 />
               </div>
 
-                            <div
-                className="flex h-36 w-36 min-[426px]:h-[35%] min-[426px]:w-[35%]
-                  items-center justify-center rounded-full absolute z-1001
-                  bottom-[55%] left-[23%]"
+              <div
+                className="
+      flex h-[35%] w-[35%]
+      items-center justify-center rounded-full absolute z-1001
+      bottom-[55%] left-[23%]
+    "
               >
                 {noteImages.map((img, index) => (
                   <img
@@ -497,7 +511,7 @@ export default function Hero() {
               <img
                 src={img1.src}
                 alt=""
-                className="hidden min-[426px]:block w-full relative z-1000 pointer-events-none"
+                className="block w-full relative z-1000 pointer-events-none"
               />
             </div>
           </div>
