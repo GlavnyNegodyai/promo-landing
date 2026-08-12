@@ -4,7 +4,7 @@
 
 Pet-проект, сделанный для практики работы с GSAP. Дизайн делал сам, вдохновляясь айдентикой компании Nothing и дизайном проектов с Awwwards.
 
-Demo: {пока в процессе}
+Demo: [GitHub Pages](https://glavnynegodyai.github.io/promo-landing/)
 
 ## Что есть в проекте
 
