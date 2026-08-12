@@ -1,46 +1,72 @@
-# Astro Starter Kit: Basics
+# m.labs
 
-```sh
-npm create astro@latest -- --template basics
+Одностраничный промо-сайт вымышленного SMM-агентства.
+
+Pet-проект, сделанный для практики работы с GSAP. Дизайн делал сам, вдохновляясь айдентикой компании Nothing и дизайном проектов с Awwwards.
+
+Demo: {пока в процессе}
+
+## Что есть в проекте
+
+Страница состоит из нескольких секций:
+
+* Hero
+* Our Awards
+* About Us
+* Calculator
+* The Press
+* User Reviews
+* Q&A
+* Contact Form
+
+В hero два слайда, переход между которыми привязан к скроллу через GSAP ScrollTrigger.
+
+Там же используется анимированная SVG-маска.
+
+На втором слайде есть интерактивная анимация: элементы реагируют на положение курсора, отталкиваются от него и после возвращаются на свои исходные позиции.
+
+Для плавного скролла и отключения скролла на время замены слайдов в Hero используется Lenis.
+
+<img width="1855" height="866" alt="image" src="https://github.com/user-attachments/assets/4394711d-2b98-4068-b15c-52fc9d15fe31" />
+
+В about us также использовал GSAP ScrollTrigger для анимации перемещения карточек.
+
+<img width="1858" height="810" alt="image" src="https://github.com/user-attachments/assets/cdbec287-e938-4ccc-b6e8-5f77ec171a22" />
+
+Сайт адаптирован под desktop, tablet и mobile.
+
+## Stack
+
+* TypeScript
+* Astro
+* React
+* GSAP
+* ScrollTrigger
+* Lenis
+
+## Запуск
+
+```bash
+git clone https://github.com/USERNAME/REPOSITORY.git
+cd REPOSITORY
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+Локально проект запускается на:
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+http://127.0.0.1:4322/
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Build
 
-## 🧞 Commands
+```bash
+npm run build
+```
 
-All commands are run from the root of the project, from a terminal:
+Проверить production-сборку локально:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```bash
+npm run preview
+```
